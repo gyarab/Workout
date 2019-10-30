@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/thanos"
+    android:background="@drawable/arnold"
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/startButton"
+        android:id="@+id/button"
         android:layout_width="190dp"
         android:layout_height="80dp"
         android:text="Start"
