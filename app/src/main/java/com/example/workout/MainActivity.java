@@ -1,21 +1,34 @@
-package com.example.workout
+package com.example.workout;
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
-class MainActivity : AppCompatActivity() {
+import androidx.appcompat.app.AppCompatActivity;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val btn = findViewById<Button>(R.id.startButton)
-        btn.setOnClickListener {
-            val intent = Intent(this@MainActivity, chooseProgram::class.java)
-            intent.putExtra("Identifier1", 50);
-            startActivity(intent)
-        }
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+        Button btn = findViewById(R.id.startButton);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchActivity();
+            }
+        });
+
 
     }
+
+    private void launchActivity() {
+        Intent intent = new Intent(this, Ac2.class);
+        startActivity(intent);
+    }
+
 }
+
