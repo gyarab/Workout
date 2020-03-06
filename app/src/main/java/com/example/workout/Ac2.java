@@ -6,8 +6,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Ac2 extends AppCompatActivity {
 
@@ -20,29 +20,16 @@ public class Ac2 extends AppCompatActivity {
        DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.query(DBHandler.TB_PROGRAMS,null,null,null,null,null,null);
-        List itemIds = new ArrayList<>();
-        int iterate = 0;
-        if(cursor!=null) {
-         cursor.moveToFirst();
-
-            itemIds.add(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)));
-
-            itemIds.add(cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)));
-
+        Map<Integer,String> itemIds = new HashMap<>();
+        if(cursor!=null){
+            System.out.println(cursor.getCount());
+            cursor.moveToFirst();
         }
-        List itemid = new ArrayList<>();
-        Cursor cursor2 = db.query(DBHandler.TB_EXERCISES,null,null,null,null,null,null);
-        if(cursor2!=null){
-            cursor2.moveToFirst();
-            itemid.add(cursor2.getInt(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_ID)));
-            itemid.add(cursor2.getString(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_NAME)));
-
-        }while(cursor2.moveToNext()){
-
+        while(!cursor.isAfterLast()){
+            itemIds.put(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)),cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)));
+            cursor.moveToNext();
         }
         cursor.close();
-        cursor2.close();
-        System.out.println(itemid.size());
-        System.out.println(itemIds.get(1));
+
     }
 }

@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DBHandler extends SQLiteOpenHelper {
     //database information
@@ -50,15 +52,19 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAM_TABLE);
         db.execSQL(WEEK_TABLE);
-        ContentValues cv = new ContentValues();
-        cv.put(COL_PROGRAM_ID,1);
-        cv.put(COL_PROGRAM_NAME,"nSuns");
-        db.insert(TB_PROGRAMS,null,cv);
 
-        //nSuns 5 day LP
-        cv.clear();
-        cv.put(C)
+        Map<Integer,String> programs = new HashMap<>();
+        programs.put(1,"Coje");
+        programs.put(2,"5/3/1 BBB");
+        programs.put(3,"Jacked & Tan");
+        for(int i =0;i<programs.size();i++) {
+            ContentValues val = new ContentValues();
+            val.put(COL_PROGRAM_ID, i);
+            val.put(COL_EXERCISES_NAME, programs.get(i));
+            db.insert(TB_PROGRAMS, null, val);
 
+            System.out.println(programs.size());
+        }
         // exercise insert
         List<String> list = new ArrayList<>();
         list.add("Bench press");
