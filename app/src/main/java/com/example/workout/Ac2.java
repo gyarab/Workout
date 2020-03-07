@@ -1,5 +1,6 @@
 package com.example.workout;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class Ac2 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 Snackbar.make(view, "ahoj", Snackbar.LENGTH_LONG).setAction("No action", null).show();
+                Intent intent = new Intent(getApplicationContext(), ShowWorkout.class);
+                startActivity(intent);
             }
 
         });

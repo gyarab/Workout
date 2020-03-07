@@ -17,6 +17,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TB_EXERCISES = "exercise";
     public static final String TB_WEEKS = "weeks";
     public static final String TB_PROGRAMS = "programs";
+    public static final String TB_MAXES="maxes";
 
     public static final String COL_EXERCISES_ID = "ExerciseID";
     public static final String COL_EXERCISES_NAME = "ExerciseName";
@@ -31,6 +32,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_WEEK_EXEC = "Exercise";
     public static final String COL_WEEK_SETNUM = "Set_num";
     public static final String COL_WEEK_REPNUM = "Repetition_num";
+
+    public static final String COL_MAXES_EXEC = "Exec_max";
+    public static final String COL_MAXES_WEIGHT= "Exec_weight";
+
     SQLiteDatabase dB;
 
     //initialization
@@ -46,10 +51,11 @@ public class DBHandler extends SQLiteOpenHelper {
         String EXEC_TABLE = tbl_cre + TB_EXERCISES + "( " + COL_EXERCISES_ID + "  INTEGER PRIMARY KEY, " + COL_EXERCISES_NAME + " TEXT )";
         String PROGRAM_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT  )";
         String WEEK_TABLE = tbl_cre + TB_WEEKS + "( " + COL_WEEK_PID + " INTEGER PRIMARY KEY," + COL_WEEK_WEEKID + " INTEGER," + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_PID + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_ID + "));";
-
+        String MAXES_TABLE= tbl_cre + TB_MAXES + "( " + COL_MAXES_EXEC + " String PRIMARY_KEY," + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAM_TABLE);
         db.execSQL(WEEK_TABLE);
+        db.execSQL(MAXES_TABLE);
 
         List<String> programs = new ArrayList<>();
         programs.add("0");

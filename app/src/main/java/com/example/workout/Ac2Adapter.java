@@ -58,8 +58,9 @@ public class Ac2Adapter extends ArrayAdapter<ProgramData> implements View.OnClic
             viewHolder = (ViewHolder) convertView.getTag();
             result = convertView;
         }
+        lastPosition=position;
         viewHolder.textname.setText(programData.getName());
-        viewHolder.textid.setText(programData.getType());
+        viewHolder.txttype.setText(programData.getType());
         return convertView;
     }
 }
