@@ -15,8 +15,9 @@ public class ShowWorkout extends Activity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity3);
         recyclerView = findViewById(R.id.RecyclerView);
@@ -25,16 +26,17 @@ public class ShowWorkout extends Activity {
         recyclerView.setLayoutManager(layoutManager);
         DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
-        recyclerViewAdapter= new MyAdapter(db);
+        recyclerViewAdapter = new MyAdapter(db);
         recyclerView.setAdapter(recyclerViewAdapter);
-        Map<Integer,String> itemid = new HashMap<>();
-        Cursor cursor2 = db.query(DBHandler.TB_EXERCISES,null,null,null,null,null,null);
-        if(cursor2!=null){
+        Map<Integer, String> itemid = new HashMap<>();
+        Cursor cursor2 = db.query(DBHandler.TB_EXERCISES, null, null, null, null, null, null);
+        if (cursor2 != null) {
             cursor2.moveToFirst();
 
 
-        }while(!cursor2.isAfterLast()){
-            itemid.put(cursor2.getInt(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_ID)),cursor2.getString(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_NAME)));
+        }
+        while (!cursor2.isAfterLast()) {
+            itemid.put(cursor2.getInt(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_ID)), cursor2.getString(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_NAME)));
             // itemid.add(cursor2.getString(cursor2.getColumnIndex(DBHandler.COL_EXERCISES_NAME)));
             cursor2.moveToNext();
 

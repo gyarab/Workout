@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DBHandler extends SQLiteOpenHelper {
     //database information
@@ -22,10 +20,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public static final String COL_EXERCISES_ID = "ExerciseID";
     public static final String COL_EXERCISES_NAME = "ExerciseName";
-    public static final String COL_EXERCISES_MUSCLE_TARGET = "Muscle_target";
 
     public static final String COL_PROGRAM_ID = "ProgramID";
     public static final String COL_PROGRAM_NAME = "ProgramName";
+    public static final String COL_PROGRAM_TYPE = "ProgramType";
 
     public static final String COL_WEEK_PID = "ParentID";
     public static final String COL_WEEK_WEEKID = "WeekID";
@@ -38,29 +36,41 @@ public class DBHandler extends SQLiteOpenHelper {
     //initialization
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
-        dB = this.getWritableDatabase();
+        dB = getWritableDatabase();
 
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String tbl_cre = "CREATE TABLE IF NOT EXISTS ";
-        String EXEC_TABLE = tbl_cre + "exercise" + "( " + "ExerciseID" + "  INTEGER PRIMARY KEY, " + "ExerciseName" + " TEXT )";
-        String PROGRAM_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT )";
+        String EXEC_TABLE = tbl_cre + TB_EXERCISES + "( " + COL_EXERCISES_ID + "  INTEGER PRIMARY KEY, " + COL_EXERCISES_NAME + " TEXT )";
+        String PROGRAM_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT  )";
         String WEEK_TABLE = tbl_cre + TB_WEEKS + "( " + COL_WEEK_PID + " INTEGER PRIMARY KEY," + COL_WEEK_WEEKID + " INTEGER," + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_PID + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_ID + "));";
 
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAM_TABLE);
         db.execSQL(WEEK_TABLE);
 
-        Map<Integer,String> programs = new HashMap<>();
-        programs.put(1,"Coje");
-        programs.put(2,"5/3/1 BBB");
-        programs.put(3,"Jacked & Tan");
-        for(int i =0;i<programs.size();i++) {
+        List<String> programs = new ArrayList<>();
+        programs.add("0");
+        programs.add("nSuns");
+        programs.add("Powerbuilding");
+        programs.add("1");
+        programs.add("5/3/1 BBB");
+        programs.add("Powerlifting");
+        programs.add("2");
+        programs.add("Jacked & Tan");
+        programs.add("Powerbuilding");
+
+        for (int i = 0; i < programs.size(); i = i + 3) {
             ContentValues val = new ContentValues();
-            val.put(COL_PROGRAM_ID, i);
-            val.put(COL_EXERCISES_NAME, programs.get(i));
+            if(i==0) {
+                val.put(COL_PROGRAM_ID, i);
+            }else{
+                val.put(COL_PROGRAM_ID, i - 2);
+            }
+            val.put(COL_PROGRAM_NAME, programs.get(i + 1));
+            val.put(COL_PROGRAM_TYPE, programs.get(i + 2));
             db.insert(TB_PROGRAMS, null, val);
 
             System.out.println(programs.size());
@@ -110,15 +120,14 @@ public class DBHandler extends SQLiteOpenHelper {
         list.add("Straight leg calf raise");
         list.add("Seated calf raise");
         list.add("Abs");
-        for(int i =0;i<list.size();i++) {
+        for (int i = 0; i < list.size(); i++) {
             ContentValues val = new ContentValues();
             val.put(COL_EXERCISES_ID, i + 1);
             val.put(COL_EXERCISES_NAME, list.get(i));
             db.insert(TB_EXERCISES, null, val);
         }
-       // db.insert(TB_PROGRAMS, COL_PROGRAM_ID, COL_PROGRAM_NAME, 1, "nSuns");
-
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

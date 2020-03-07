@@ -3,33 +3,56 @@ package com.example.workout;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 
 public class Ac2 extends AppCompatActivity {
 
+    private static Ac2Adapter adapter;
+    ArrayList<ProgramData> programData;
+    ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ac2);
+        setContentView(R.layout.program_layout);
+        listView = (ListView) findViewById(R.id.list1);
+        programData = new ArrayList<>();
+        DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
 
-
-       DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
-        Cursor cursor = db.query(DBHandler.TB_PROGRAMS,null,null,null,null,null,null);
-        Map<Integer,String> itemIds = new HashMap<>();
-        if(cursor!=null){
+        Cursor cursor = db.query(DBHandler.TB_PROGRAMS, null, null, null, null, null, null);
+        if (cursor != null) {
             System.out.println(cursor.getCount());
             cursor.moveToFirst();
         }
-        while(!cursor.isAfterLast()){
-            itemIds.put(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)),cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)));
+        while (!cursor.isAfterLast()) {
+            programData.add(new ProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_TYPE))));
             cursor.moveToNext();
         }
         cursor.close();
+        adapter = new Ac2Adapter(programData, getApplicationContext());
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                Snackbar.make(view, "ahoj", Snackbar.LENGTH_LONG).setAction("No action", null).show();
+            }
 
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // getMenuInflater().inflate(R.menu.)
+        return true;
     }
 }

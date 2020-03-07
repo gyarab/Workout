@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     SQLiteDatabase db;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
 
@@ -17,17 +18,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             textView = v;
         }
     }
-        public MyAdapter(SQLiteDatabase sqLiteDatabase){
-        db=sqLiteDatabase;
-        }
-        @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-            TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.acitivity3,parent,false);
-            MyViewHolder vh = new MyViewHolder(v);
-            return vh;
+
+    public MyAdapter(SQLiteDatabase sqLiteDatabase) {
+        db = sqLiteDatabase;
     }
+
     @Override
-    public void onBindViewHolder(MyViewHolder h, int position){
+    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.acitivity3, parent, false);
+        MyViewHolder vh = new MyViewHolder(v);
+        return vh;
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder h, int position) {
         h.textView.setText("");
     }
 
