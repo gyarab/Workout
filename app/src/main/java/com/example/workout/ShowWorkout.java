@@ -8,6 +8,10 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class ShowWorkout extends Activity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
@@ -26,6 +30,17 @@ public class ShowWorkout extends Activity {
         recyclerViewAdapter = new MyAdapter(db);
         recyclerView.setAdapter(recyclerViewAdapter);
         Cursor cursor2 = db.query(DBHandler.TB_PROGRAMS, null, null, null, null, null, null);
+
+        try {
+            Scanner read = new Scanner(new File("data.txt"));
+            read.useDelimiter(",");
+            String week,day,exec,set,rep,max;
+            while(read.hasNext()){
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 }
