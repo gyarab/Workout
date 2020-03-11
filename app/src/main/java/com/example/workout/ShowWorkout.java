@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ShowWorkout extends Activity {
@@ -35,7 +37,15 @@ public class ShowWorkout extends Activity {
             Scanner read = new Scanner(new File("data.txt"));
             read.useDelimiter(",");
             String week,day,exec,set,rep,max;
-            while(read.hasNext()){
+            List<String> prog = new ArrayList<>();
+            while(read.hasNextLine()){
+                week=read.next();
+                day=read.next();
+                exec=read.next();
+                set=read.next();
+                max=read.next();
+                prog.add(week);
+
 
             }
         } catch (FileNotFoundException e) {
