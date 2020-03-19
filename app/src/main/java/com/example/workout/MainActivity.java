@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchActivity() {
-        Intent intent = new Intent(this, Nav.class);
+        Intent intent = new Intent(this, Ac2.class);
         startActivity(intent);
     }
 
