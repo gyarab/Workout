@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.workout.DBHandler;
 import com.example.workout.R;
 import com.example.workout.ShowWorkoutAdapter;
-import com.example.workout.ui.ShowWorkoutData;
+import com.example.workout.ShowWorkoutData;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,6 @@ public class SlideshowFragment extends Fragment {
     private static ShowWorkoutAdapter adapter;
     ArrayList<ShowWorkoutData> workoutData;
     ListView listView;
-    private SlideshowViewModel slideshowViewModel;
     public SlideshowFragment(){
 
     }

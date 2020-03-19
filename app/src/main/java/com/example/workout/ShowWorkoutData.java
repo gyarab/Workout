@@ -1,4 +1,4 @@
-package com.example.workout.ui;
+package com.example.workout;
 
 public class ShowWorkoutData {
     int week;
