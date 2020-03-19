@@ -15,7 +15,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     public static final String DB_NAME = "WorkoutPrograms";
     public static final String TB_EXERCISES = "exercise";
-    public static final String TB_WEEKS = "weeks";
+    public static final String TB_WEEKS = "week";
     public static final String TB_PROGRAMS = "programs";
     public static final String TB_MAXES="maxes";
 
@@ -26,7 +26,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_PROGRAM_NAME = "ProgramName";
     public static final String COL_PROGRAM_TYPE = "ProgramType";
 
-    public static final String COL_WEEK_PID = "ParentID";
     public static final String COL_WEEK_WEEKID = "WeekID";
     public static final String COL_WEEK_DAYID = "DayID";
     public static final String COL_WEEK_EXEC = "Exercise";
@@ -51,11 +50,11 @@ public class DBHandler extends SQLiteOpenHelper {
         String tbl_cre = "CREATE TABLE IF NOT EXISTS ";
         String EXEC_TABLE = tbl_cre + TB_EXERCISES + "( " + COL_EXERCISES_ID + "  INTEGER PRIMARY KEY, " + COL_EXERCISES_NAME + " TEXT )";
         String PROGRAMS_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT  )";
-        String WEEK_TABLE = tbl_cre + TB_WEEKS + "( " + COL_WEEK_WEEKID + " INTEGER PRIMARY KEY, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_PID + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_ID + "));";
-        String MAXES_TABLE= tbl_cre + TB_MAXES + "( " + COL_MAXES_EXEC + " STRING PRIMARY KEY," + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
+        String WEEKS_TABLE = tbl_cre + TB_WEEKS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_WEEK_WEEKID + " INTEGER, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
+        String MAXES_TABLE = tbl_cre + TB_MAXES + "( " + COL_MAXES_EXEC + " STRING PRIMARY KEY," + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAMS_TABLE);
-        db.execSQL(WEEK_TABLE);
+        db.execSQL(WEEKS_TABLE);
         db.execSQL(MAXES_TABLE);
 
         List<String> programs = new ArrayList<>();
@@ -71,9 +70,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         for (int i = 0; i < programs.size(); i = i + 3) {
             ContentValues val = new ContentValues();
-            if(i==0) {
+            if (i == 0) {
                 val.put(COL_PROGRAM_ID, i);
-            }else{
+            } else {
                 val.put(COL_PROGRAM_ID, i - 2);
             }
             val.put(COL_PROGRAM_NAME, programs.get(i + 1));
@@ -133,8 +132,17 @@ public class DBHandler extends SQLiteOpenHelper {
             val.put(COL_EXERCISES_NAME, list.get(i));
             db.insert(TB_EXERCISES, null, val);
         }
-    }
 
+        //program insert
+        ContentValues val = new ContentValues();
+        val.put(COL_WEEK_WEEKID,1);
+        val.put(COL_WEEK_DAYID,1);
+        val.put(COL_WEEK_EXEC,"Bench press");
+        val.put(COL_WEEK_SETNUM,1);
+        val.put(COL_WEEK_REPNUM,8);
+        val.put(COL_WEEK_MAX,77.5);
+        db.insert(TB_WEEKS,null,val);
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -149,7 +157,7 @@ public class DBHandler extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             int res = cursor.getInt(0);
             String res2 = cursor.getString(2);
-            result = String.valueOf(res) + " " + res2 + System.getProperty("line.separator");
+            result = res + " " + res2 + System.getProperty("line.separator");
         }
         cursor.close();
         db.close();
@@ -164,13 +172,14 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public long addWeek(int weekID, int dayID, String exercise, String sets, String reps) {
+    public long addWeek(int weekID, int dayID, String exercise, String sets, String reps, String max) {
         ContentValues cv = new ContentValues();
         cv.put(COL_WEEK_WEEKID, weekID);
         cv.put(COL_WEEK_DAYID, dayID);
         cv.put(COL_WEEK_EXEC, exercise);
         cv.put(COL_WEEK_SETNUM, sets);
         cv.put(COL_WEEK_REPNUM, reps);
+        cv.put(COL_WEEK_MAX,max);
         return dB.insert(TB_WEEKS, null, cv);
     }
 

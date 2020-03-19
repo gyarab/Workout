@@ -1,11 +1,9 @@
 package com.example.workout;
 
 import android.content.res.AssetManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.FileNotFoundException;
@@ -23,35 +21,44 @@ public class ShowWorkout extends Nav {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity3);
-        recyclerView = findViewById(R.id.RecyclerView);
+        setContentView(R.layout.fragment_workout);
+        DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+      /*  recyclerView = findViewById(R.id.RecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
-        SQLiteDatabase db = dbHandler.getReadableDatabase();
-        recyclerViewAdapter = new MyAdapter(db);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        Cursor cursor2 = db.query(DBHandler.TB_PROGRAMS, null, null, null, null, null, null);
+
+        recyclerViewAdapter = new ShowWorkoutAdapter(db);
+        recyclerView.setAdapter(recyclerViewAdapter);*/
+
 
         try {
             AssetManager assetManager = getAssets();
             String[] files = assetManager.list("");
             InputStream input = assetManager.open("data");
             Scanner read = new Scanner(input);
-            read.useDelimiter(",");
-            String week,day,exec,set,rep,max;
+            read.useDelimiter("");
+            int week;
+            int day;
+            String exec;
+            String set;
+            String rep;
+            String max;
             List<String> prog = new ArrayList<>();
-            while(read.hasNextLine()){
-                week=read.next();
-                day=read.next();
+            read.nextLine();
+         //   while(read.hasNextLine()){
+
+                week= Integer.parseInt(read.next());
+                day= Integer.parseInt(read.next());
                 exec=read.next();
                 set=read.next();
+                rep=read.next();
                 max=read.next();
-                prog.add(week);
+                prog.add(String.valueOf(week));
+                dbHandler.addWeek(week,day,exec,set,rep,max);
 
-
-            }
+        //    }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

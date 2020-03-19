@@ -11,8 +11,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 
 public class Ac2 extends AppCompatActivity {
@@ -24,7 +22,7 @@ public class Ac2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_layout);
-        listView = (ListView) findViewById(R.id.list1);
+        listView = findViewById(R.id.list1);
         programData = new ArrayList<>();
         DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
 
@@ -44,8 +42,7 @@ public class Ac2 extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Snackbar.make(view, "ahoj", Snackbar.LENGTH_LONG).setAction("No action", null).show();
-                Intent intent = new Intent(getApplicationContext(), ShowWorkout.class);
+                Intent intent = new Intent(getApplicationContext(), Nav.class);
                 startActivity(intent);
             }
 
