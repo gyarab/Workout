@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ShowWorkout extends Nav {
+public class ShowWorkout extends NavBarActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -47,18 +47,18 @@ public class ShowWorkout extends Nav {
             String max;
             List<String> prog = new ArrayList<>();
             read.nextLine();
-         //   while(read.hasNextLine()){
+            //   while(read.hasNextLine()){
 
-                week= Integer.parseInt(read.next());
-                day= Integer.parseInt(read.next());
-                exec=read.next();
-                set=read.next();
-                rep=read.next();
-                max=read.next();
-                prog.add(String.valueOf(week));
-                dbHandler.addWeek(week,day,exec,set,rep,max);
+            week = Integer.parseInt(read.next());
+            day = Integer.parseInt(read.next());
+            exec = read.next();
+            set = read.next();
+            rep = read.next();
+            max = read.next();
+            prog.add(String.valueOf(week));
+            dbHandler.addWeek(week, day, exec, set, rep, max);
 
-        //    }
+            //    }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

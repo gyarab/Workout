@@ -13,11 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public class Ac2 extends AppCompatActivity {
+public class ChooseProgramActivity extends AppCompatActivity {
 
-    private static Ac2Adapter adapter;
-    ArrayList<ProgramData> programData;
+    private static ChooseProgramAdapter adapter;
+    ArrayList<ChooseProgramData> programData;
     ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +34,16 @@ public class Ac2 extends AppCompatActivity {
             cursor.moveToFirst();
         }
         while (!cursor.isAfterLast()) {
-            programData.add(new ProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_TYPE))));
+            programData.add(new ChooseProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_TYPE))));
             cursor.moveToNext();
         }
         cursor.close();
-        adapter = new Ac2Adapter(programData, getApplicationContext());
+        adapter = new ChooseProgramAdapter(programData, getApplicationContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), Nav.class);
+                Intent intent = new Intent(getApplicationContext(), NavBarActivity.class);
                 startActivity(intent);
             }
 

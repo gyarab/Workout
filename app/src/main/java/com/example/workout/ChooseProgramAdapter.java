@@ -11,8 +11,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class Ac2Adapter extends ArrayAdapter<ProgramData> implements View.OnClickListener {
-    private ArrayList<ProgramData> dataSet;
+public class ChooseProgramAdapter extends ArrayAdapter<ChooseProgramData> implements View.OnClickListener {
+    private ArrayList<ChooseProgramData> dataSet;
     Context myContext;
 
     private static class ViewHolder {
@@ -21,7 +21,7 @@ public class Ac2Adapter extends ArrayAdapter<ProgramData> implements View.OnClic
         TextView txttype;
     }
 
-    public Ac2Adapter(ArrayList<ProgramData> data, Context context) {
+    public ChooseProgramAdapter(ArrayList<ChooseProgramData> data, Context context) {
         super(context, R.layout.row_item, data);
         this.dataSet = data;
         this.myContext = context;
@@ -31,7 +31,7 @@ public class Ac2Adapter extends ArrayAdapter<ProgramData> implements View.OnClic
     public void onClick(View v) {
         int position = (Integer) v.getTag();
         Object obj = getItem(position);
-        ProgramData programData = (ProgramData) obj;
+        ChooseProgramData programData = (ChooseProgramData) obj;
         switch (v.getId()) {
             case R.id.textView:
                 Snackbar.make(v, "Program name " + obj, Snackbar.LENGTH_LONG).setAction("No action", null).show();
@@ -43,7 +43,7 @@ public class Ac2Adapter extends ArrayAdapter<ProgramData> implements View.OnClic
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ProgramData programData = getItem(position);
+        ChooseProgramData programData = getItem(position);
         ViewHolder viewHolder;
         final View result;
         if (convertView == null) {
@@ -58,7 +58,7 @@ public class Ac2Adapter extends ArrayAdapter<ProgramData> implements View.OnClic
             viewHolder = (ViewHolder) convertView.getTag();
             result = convertView;
         }
-        lastPosition=position;
+        lastPosition = position;
         viewHolder.textname.setText(programData.getName());
         viewHolder.txttype.setText(programData.getType());
         return convertView;

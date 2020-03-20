@@ -23,11 +23,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     private void launchActivity() {
-        Intent intent = new Intent(this, Ac2.class);
+        Intent intent = new Intent(this, ChooseProgramActivity.class);
         startActivity(intent);
     }
 

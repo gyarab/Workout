@@ -14,7 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class Nav extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class NavBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

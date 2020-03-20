@@ -1,11 +1,11 @@
 package com.example.workout;
 
-public class ProgramData {
+public class ChooseProgramData {
     String name;
     int id;
     String type;
 
-    public ProgramData(int id, String name, String type) {
+    public ChooseProgramData(int id, String name, String type) {
         this.name = name;
         this.id = id;
         this.type = type;
