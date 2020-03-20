@@ -3,6 +3,8 @@ package com.example.workout.ui.TrainingMax;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,29 +22,67 @@ import com.example.workout.R;
 
 import java.util.ArrayList;
 
+import static com.example.workout.R.id.listMaxes;
+import static com.example.workout.R.id.maxesWeight;
+
 public class MaxesFragment extends Fragment {
     private static MaxesAdapter adapter;
     ArrayList<MaxesData> maxesData;
     ListView listView;
-    EditText a;
+    EditText max_weight;
+    int listViewpos = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         final View root = inflater.inflate(R.layout.fragment_maxes, container, false);
-        listView = root.findViewById(R.id.listMaxes);
+
+        listView = root.findViewById(listMaxes);
         maxesData = new ArrayList<>();
-        DBHandler dbHandler = new DBHandler(getContext());
+        final DBHandler dbHandler = new DBHandler(getContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Switch mySwitch = root.findViewById(R.id.switch1);
 
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                a = root.findViewById(R.id.maxesWeight);
-                a.setEnabled(isChecked);
+
+                int itemsCount = listView.getChildCount();
+                //max_weight=root.findViewById(maxesWeight);
+                for (int i = 0; i < itemsCount; i++) {
+                    listView.getChildAt(i).findViewById(maxesWeight).setEnabled(isChecked);
+                    max_weight = listView.getChildAt(i).findViewById(maxesWeight);
+
+                    if (isChecked) {
+                        max_weight.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                listViewpos = listView.getPositionForView(listView.getFocusedChild());
+
+                                System.out.println(listViewpos);
+                                System.out.println("funguje + " + s);
+                                TextView a = root.findViewById(maxesWeight);
+                                View w = listView.getChildAt(listViewpos);
+                                TextView newMax = w.findViewById(maxesWeight);
+                                TextView newName = w.findViewById(R.id.maxesName);
+                                //System.out.println(b.getText().toString());
+
+                                dbHandler.updateMax(newName.getText().toString(), Float.parseFloat(s.toString()));
+
+
+                            }
+                        });
+                    }
+                }
             }
         });
-
         Cursor cursor = db.query(DBHandler.TB_MAXES, null, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();

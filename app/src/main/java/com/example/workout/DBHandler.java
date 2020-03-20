@@ -148,8 +148,16 @@ public class DBHandler extends SQLiteOpenHelper {
         //max insert
         ContentValues cV = new ContentValues();
         cV.put(COL_MAXES_EXEC, "Bench press");
-        cV.put(COL_MAXES_WEIGHT, "59");
+        cV.put(COL_MAXES_WEIGHT, "0");
         db.insert(TB_MAXES, null, cV);
+        ContentValues cV2 = new ContentValues();
+        cV2.put(COL_MAXES_EXEC, "Squat");
+        cV2.put(COL_MAXES_WEIGHT, "0");
+        db.insert(TB_MAXES, null, cV2);
+        ContentValues cV3 = new ContentValues();
+        cV3.put(COL_MAXES_EXEC, "Deadlift");
+        cV3.put(COL_MAXES_WEIGHT, "0");
+        db.insert(TB_MAXES, null, cV3);
     }
 
 
@@ -196,6 +204,17 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(COL_PROGRAM_NAME, name);
         return dB.insert(TB_PROGRAMS, null, cv);
+    }
+
+    public boolean updateMax(String exec, float newMax) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_MAXES_EXEC, exec);
+        contentValues.put(COL_MAXES_WEIGHT, newMax);
+        String selection = COL_MAXES_EXEC + " LIKE ?";
+        String[] selectionArgs = {exec};
+        int i = db.update(TB_MAXES, contentValues, selection, selectionArgs);
+        return i > 0;
     }
 }
 

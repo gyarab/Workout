@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.workout.R;
 
@@ -33,6 +34,7 @@ public class MaxesAdapter extends ArrayAdapter<MaxesData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         MaxesData data = getItem(position);
         MyViewHolder viewHolder;
+
         if (convertView == null) {
             viewHolder = new MyViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -47,7 +49,13 @@ public class MaxesAdapter extends ArrayAdapter<MaxesData> {
         viewHolder.txtname.setText(data.getName());
         // viewHolder.txtweight.setText(String.valueOf(data.getWeight()));
         viewHolder.txtweight.setHint(String.valueOf(data.getWeight()));
+        convertView.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(myContext, "click item",Toast.LENGTH_LONG).show();
+            }
+        });
         return convertView;
     }
 }

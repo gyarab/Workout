@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="5sp">
 
     <TextView
         android:id="@+id/maxesName"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:textSize="18sp"
+        android:layout_width="150sp"
+        android:layout_height="50sp"
         android:gravity="center_vertical"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/maxesWeight"
-        android:layout_width="150dp"
-        android:enabled="false"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:layout_height="50dp"
+        android:layout_width="150sp"
+        android:layout_height="50sp"
         android:ems="10"
-        android:padding="0dp"
-        android:ellipsize="start"
-        android:autofillHints="username"
-        android:inputType="numberSigned"
-        tools:ignore="LabelFor"
+        android:enabled="false"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="false"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
