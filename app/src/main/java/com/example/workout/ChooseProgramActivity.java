@@ -34,9 +34,11 @@ public class ChooseProgramActivity extends AppCompatActivity {
             cursor.moveToFirst();
         }
         while (!cursor.isAfterLast()) {
-            programData.add(new ChooseProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_TYPE))));
+            programData.add(new ChooseProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_ID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_NAME)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_PROGRAM_TYPE)), cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_WEEKS)), cursor.getInt(cursor.getColumnIndex(DBHandler.COL_PROGRAM_DAYS))));
             cursor.moveToNext();
         }
+        db.close();
+        dbHandler.close();
         cursor.close();
         adapter = new ChooseProgramAdapter(programData, getApplicationContext());
         listView.setAdapter(adapter);

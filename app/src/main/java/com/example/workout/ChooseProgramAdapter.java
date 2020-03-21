@@ -39,26 +39,20 @@ public class ChooseProgramAdapter extends ArrayAdapter<ChooseProgramData> implem
         }
     }
 
-    private int lastPosition = -1;
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ChooseProgramData programData = getItem(position);
         ViewHolder viewHolder;
-        final View result;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.row_item, parent, false);
             viewHolder.textname = convertView.findViewById(R.id.textView);
             viewHolder.txttype = convertView.findViewById(R.id.textView2);
-            result = convertView;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result = convertView;
         }
-        lastPosition = position;
         viewHolder.textname.setText(programData.getName());
         viewHolder.txttype.setText(programData.getType());
         return convertView;

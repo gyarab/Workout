@@ -92,6 +92,8 @@ public class MaxesFragment extends Fragment {
             cursor.moveToNext();
         }
         cursor.close();
+        db.close();
+        dbHandler.close();
         adapter = new MaxesAdapter(maxesData, getActivity());
         listView.setAdapter(adapter);
         return root;

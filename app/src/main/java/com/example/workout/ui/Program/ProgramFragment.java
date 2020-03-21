@@ -29,20 +29,46 @@ public class ProgramFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workout, container, false);
         listView = root.findViewById(R.id.showWorkoutList);
-
-        workoutData = new ArrayList<>();
         DBHandler dbHandler = new DBHandler(getContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
-        Cursor cursor = db.query(DBHandler.TB_WEEKS, null, null, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        Cursor cursor2 = db.query(DBHandler.TB_CURR, null, null, null, null, null, null);
+        ArrayList<Integer> curr_date = new ArrayList<>();
+        if (cursor2 != null) {
+            cursor2.moveToFirst();
         }
-        while (!cursor.isAfterLast()) {
-            workoutData.add(new ProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_WEEKID)), cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_DAYID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_SETNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_REPNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_EXEC)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_MAX))));
-            cursor.moveToNext();
+
+
+        while (!cursor2.isAfterLast()) {
+            curr_date.add(cursor2.getInt(cursor2.getColumnIndex(DBHandler.COL_CURR_WEEK)));
+            curr_date.add(cursor2.getInt(cursor2.getColumnIndex(DBHandler.COL_CURR_DAY)));
+            cursor2.moveToNext();
         }
-        cursor.close();
-        adapter = new ProgramAdapter(workoutData, getActivity());
+        cursor2.close();
+        if (workoutData == null) {
+            workoutData = new ArrayList<>();
+
+            String selection = curr_date.get(0) + "=" + DBHandler.COL_WEEK_WEEKID + " AND WHERE " + curr_date.get(1) + "=" + DBHandler.COL_WEEK_DAYID;
+            String[] selectionArgs = {curr_date.get(0).toString(), curr_date.get(1).toString()};
+            Cursor cursor = db.query(DBHandler.TB_WEEKS, null, null, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            while (!cursor.isAfterLast()) {
+                workoutData.add(new ProgramData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_WEEKID)), cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_DAYID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_SETNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_REPNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_EXEC)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_MAX))));
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        ArrayList<ProgramData> curr_data = new ArrayList<>();
+        int i = 0;
+        while (i < workoutData.size()) {
+            if (curr_date.get(0) == workoutData.get(i).getWeek() && curr_date.get(1) == workoutData.get(i).getDay()) {
+                curr_data.add(workoutData.get(i));
+
+            }
+            i++;
+        }
+        adapter = new ProgramAdapter(curr_data, getActivity());
         listView.setAdapter(adapter);
 
         return root;

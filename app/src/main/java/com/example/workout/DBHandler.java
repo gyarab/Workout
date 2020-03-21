@@ -3,21 +3,26 @@ package com.example.workout;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class DBHandler extends SQLiteOpenHelper {
     //database information
+    Context myContext;
     private static final int DATABASE_VERSION = 1;
     public static final String DB_NAME = "WorkoutPrograms";
     public static final String TB_EXERCISES = "exercise";
     public static final String TB_WEEKS = "week";
     public static final String TB_PROGRAMS = "programs";
     public static final String TB_MAXES = "maxes";
+    public static final String TB_CURR = "current";
 
     public static final String COL_EXERCISES_ID = "ExerciseID";
     public static final String COL_EXERCISES_NAME = "ExerciseName";
@@ -25,6 +30,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_PROGRAM_ID = "ProgramID";
     public static final String COL_PROGRAM_NAME = "ProgramName";
     public static final String COL_PROGRAM_TYPE = "ProgramType";
+    public static final String COL_PROGRAM_DAYS = "ProgramDays";
+    public static final String COL_PROGRAM_WEEKS = "ProgramWeeks";
 
     public static final String COL_WEEK_WEEKID = "WeekID";
     public static final String COL_WEEK_DAYID = "DayID";
@@ -37,12 +44,18 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_MAXES_EXEC = "Exec_max";
     public static final String COL_MAXES_WEIGHT = "Exec_weight";
 
+    public static final String COL_CURR_WEEK = "Curr_week";
+    public static final String COL_CURR_DAY = "Curr_day";
+
     SQLiteDatabase dB;
+    AssetManager assetManager;
 
     //initialization
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
-        dB = getWritableDatabase();
+        assetManager = context.getAssets();
+        //dB = getWritableDatabase();
+        myContext = context;
 
     }
 
@@ -50,46 +63,58 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String tbl_cre = "CREATE TABLE IF NOT EXISTS ";
         String EXEC_TABLE = tbl_cre + TB_EXERCISES + "( " + COL_EXERCISES_ID + "  INTEGER PRIMARY KEY, " + COL_EXERCISES_NAME + " TEXT )";
-        String PROGRAMS_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT  )";
+        String PROGRAMS_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT, " + COL_PROGRAM_WEEKS + " INTEGER, " + COL_PROGRAM_DAYS + " INTEGER )";
         String WEEKS_TABLE = tbl_cre + TB_WEEKS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_WEEK_PRGNAME + " TEXT, " + COL_WEEK_WEEKID + " INTEGER, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_PRGNAME + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         String MAXES_TABLE = tbl_cre + TB_MAXES + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_MAXES_EXEC + " TEXT, " + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
+        String CURRENT_PROGRAM = tbl_cre + TB_CURR + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_CURR_WEEK + " INTEGER, " + COL_CURR_DAY + " INTEGER )";
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAMS_TABLE);
         db.execSQL(WEEKS_TABLE);
         db.execSQL(MAXES_TABLE);
+        db.execSQL(CURRENT_PROGRAM);
 
+
+        //program insert
         List<String> programs = new ArrayList<>();
         programs.add("0");
         programs.add("nSuns");
         programs.add("Powerbuilding");
         programs.add("1");
+        programs.add("5");
+        programs.add("1");
         programs.add("5/3/1 BBB");
         programs.add("Powerlifting");
+        programs.add("4");
+        programs.add("5");
         programs.add("2");
         programs.add("Jacked & Tan");
         programs.add("Powerbuilding");
+        programs.add("6");
+        programs.add("6");
 
-        for (int i = 0; i < programs.size(); i = i + 3) {
+        ContentValues contVal = new ContentValues();
+        contVal.put(COL_CURR_WEEK, 1);
+        contVal.put(COL_CURR_DAY, 1);
+        db.insert(TB_CURR, null, contVal);
+        for (int i = 0; i < programs.size()-4; i = i + 5) {
             ContentValues val = new ContentValues();
-            if (i == 0) {
-                val.put(COL_PROGRAM_ID, i);
-            } else {
-                val.put(COL_PROGRAM_ID, i - 2);
-            }
-            val.put(COL_PROGRAM_NAME, programs.get(i + 1));
+            val.put(COL_PROGRAM_ID, programs.get(i));
+            val.put(COL_PROGRAM_NAME, programs.get(i+1));
             val.put(COL_PROGRAM_TYPE, programs.get(i + 2));
+            val.put(COL_PROGRAM_WEEKS,programs.get(i+3));
+            val.put(COL_PROGRAM_DAYS,programs.get(i+4));
             db.insert(TB_PROGRAMS, null, val);
 
             System.out.println(programs.size());
         }
         // exercise insert
         List<String> list = new ArrayList<>();
-        list.add("Bench press");
-        list.add("Shoulder press");
-        list.add("Close grip bench press");
+        list.add("Bench press ");
+        list.add("Overhead press");
+        list.add("Close grip bench");
         list.add("Overhead triceps extension");
         list.add("Triceps pushdown");
-        list.add("Incline bench press");
+        list.add("Incline bench");
         list.add("Chest flyes");
         list.add("Skullcrushers");
         list.add("Push-ups");
@@ -100,7 +125,7 @@ public class DBHandler extends SQLiteOpenHelper {
         list.add("Lat pulldown");
         list.add("Pullover");
         list.add("Shrugs");
-        list.add("Conventional deadlift");
+        list.add("Deadlift");
         list.add("Stiff leg deadlift");
         list.add("Snatch grip deadlift");
         list.add("Sumo deadlift");
@@ -134,18 +159,34 @@ public class DBHandler extends SQLiteOpenHelper {
             db.insert(TB_EXERCISES, null, val);
         }
 
-        //program insert
-        ContentValues val = new ContentValues();
-        val.put(COL_WEEK_WEEKID, 1);
-        val.put(COL_WEEK_PRGNAME, "nSuns");
-        val.put(COL_WEEK_DAYID, 1);
-        val.put(COL_WEEK_EXEC, "Bench press");
-        val.put(COL_WEEK_SETNUM, 1);
-        val.put(COL_WEEK_REPNUM, 8);
-        val.put(COL_WEEK_MAX, 77.5);
-        db.insert(TB_WEEKS, null, val);
+        //workout insert
+        ArrayList<String> workoutData = new ArrayList<>();
+        try {
+            InputStream inputStream = assetManager.open("data");
+            Scanner scanner = new Scanner(inputStream, "UTF-8").useDelimiter(",");
+            System.out.println(scanner.delimiter());
+            while (scanner.hasNext()) {
+                workoutData.add(scanner.next());
+            }
+            scanner.close();
 
-        //max insert
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("fail");
+        }
+        for (int i = 0; i < workoutData.size() - 6; i = i + 6) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COL_WEEK_WEEKID, Integer.parseInt(workoutData.get(i)));
+            contentValues.put(COL_WEEK_DAYID, Integer.parseInt(workoutData.get(i + 1)));
+            contentValues.put(COL_WEEK_EXEC, workoutData.get(i + 2));
+            contentValues.put(COL_WEEK_SETNUM, Integer.parseInt(workoutData.get(i + 3)));
+            contentValues.put(COL_WEEK_REPNUM, Integer.parseInt(workoutData.get(i + 4)));
+            contentValues.put(COL_WEEK_MAX, Float.parseFloat(workoutData.get(i + 5)));
+            contentValues.put(COL_WEEK_PRGNAME, "nSuns");
+            db.insert(TB_WEEKS, null, contentValues);
+        }
+
+
         ContentValues cV = new ContentValues();
         cV.put(COL_MAXES_EXEC, "Bench press");
         cV.put(COL_MAXES_WEIGHT, "0");
@@ -158,28 +199,17 @@ public class DBHandler extends SQLiteOpenHelper {
         cV3.put(COL_MAXES_EXEC, "Deadlift");
         cV3.put(COL_MAXES_WEIGHT, "0");
         db.insert(TB_MAXES, null, cV3);
+        ContentValues cV4 = new ContentValues();
+        cV4.put(COL_MAXES_EXEC, "Overhead press");
+        cV4.put(COL_MAXES_WEIGHT, "0");
+        db.insert(TB_MAXES, null, cV4);
     }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(dB);
     }
 
-    public String loadHandler(String table_name) {
-        String result = "";
-        String SELECT_QUERY = "SELECT * FROM " + table_name;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(SELECT_QUERY, null);
-        while (cursor.moveToNext()) {
-            int res = cursor.getInt(0);
-            String res2 = cursor.getString(2);
-            result = res + " " + res2 + System.getProperty("line.separator");
-        }
-        cursor.close();
-        db.close();
-        return result;
-    }
 
     public long addExercise(int id, String name) {
         ContentValues cv = new ContentValues();
@@ -214,6 +244,17 @@ public class DBHandler extends SQLiteOpenHelper {
         String selection = COL_MAXES_EXEC + " LIKE ?";
         String[] selectionArgs = {exec};
         int i = db.update(TB_MAXES, contentValues, selection, selectionArgs);
+        return i > 0;
+    }
+
+    public boolean updateCurr(String week, String day) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_CURR_WEEK, week);
+        String selection = COL_CURR_WEEK + " LIKE?";
+        String[] selectionArgs = {week};
+        contentValues.put(COL_CURR_DAY, day);
+        int i = db.update(TB_CURR, contentValues, selection, selectionArgs);
         return i > 0;
     }
 }

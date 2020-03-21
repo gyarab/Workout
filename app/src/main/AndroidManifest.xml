@@ -14,9 +14,6 @@
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ChooseProgramActivity" />
-        <activity
-            android:name=".ShowWorkout"
-            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
