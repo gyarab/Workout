@@ -1,44 +1,31 @@
 package com.example.workout.ui.Program;
 
 public class ProgramData {
+    String name;
     int week;
     int day;
-    String set;
-    String rep;
-    String max;
-    String exec;
+    String type;
 
-    public ProgramData(int week, int day, String set, String rep, String exec, String max) {
-        this.week = week;
+    public ProgramData(String name, int week, int day, String type) {
+        this.name = name;
         this.day = day;
-        this.set = set;
-        this.rep = rep;
-        this.max = max;
-        this.exec = exec;
-
+        this.week = week;
+        this.type = type;
     }
 
-    public Integer getWeek() {
-        return week;
-    }
-
-    public Integer getDay() {
+    public int getDay() {
         return day;
     }
 
-    public String getSet() {
-        return set;
+    public int getWeek() {
+        return week;
     }
 
-    public String getRep() {
-        return rep;
+    public String getName() {
+        return name;
     }
 
-    public String getMax() {
-        return max;
-    }
-
-    public String getExec() {
-        return exec;
+    public String getType() {
+        return type;
     }
 }

@@ -46,6 +46,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public static final String COL_CURR_WEEK = "Curr_week";
     public static final String COL_CURR_DAY = "Curr_day";
+    public static final String COL_CURR_PROGRAM = "Curr_program";
 
     SQLiteDatabase dB;
     AssetManager assetManager;
@@ -66,7 +67,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String PROGRAMS_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT, " + COL_PROGRAM_WEEKS + " INTEGER, " + COL_PROGRAM_DAYS + " INTEGER )";
         String WEEKS_TABLE = tbl_cre + TB_WEEKS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_WEEK_PRGNAME + " TEXT, " + COL_WEEK_WEEKID + " INTEGER, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_PRGNAME + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         String MAXES_TABLE = tbl_cre + TB_MAXES + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_MAXES_EXEC + " TEXT, " + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
-        String CURRENT_PROGRAM = tbl_cre + TB_CURR + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_CURR_WEEK + " INTEGER, " + COL_CURR_DAY + " INTEGER )";
+        String CURRENT_PROGRAM = tbl_cre + TB_CURR + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_CURR_PROGRAM + " TEXT, " + COL_CURR_WEEK + " INTEGER, " + COL_CURR_DAY + " INTEGER, " + "FOREIGN KEY(" + COL_CURR_PROGRAM + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + "));";
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAMS_TABLE);
         db.execSQL(WEEKS_TABLE);
@@ -92,17 +93,14 @@ public class DBHandler extends SQLiteOpenHelper {
         programs.add("6");
         programs.add("6");
 
-        ContentValues contVal = new ContentValues();
-        contVal.put(COL_CURR_WEEK, 1);
-        contVal.put(COL_CURR_DAY, 1);
-        db.insert(TB_CURR, null, contVal);
-        for (int i = 0; i < programs.size()-4; i = i + 5) {
+
+        for (int i = 0; i < programs.size() - 4; i = i + 5) {
             ContentValues val = new ContentValues();
             val.put(COL_PROGRAM_ID, programs.get(i));
-            val.put(COL_PROGRAM_NAME, programs.get(i+1));
+            val.put(COL_PROGRAM_NAME, programs.get(i + 1));
             val.put(COL_PROGRAM_TYPE, programs.get(i + 2));
-            val.put(COL_PROGRAM_WEEKS,programs.get(i+3));
-            val.put(COL_PROGRAM_DAYS,programs.get(i+4));
+            val.put(COL_PROGRAM_WEEKS, programs.get(i + 3));
+            val.put(COL_PROGRAM_DAYS, programs.get(i + 4));
             db.insert(TB_PROGRAMS, null, val);
 
             System.out.println(programs.size());

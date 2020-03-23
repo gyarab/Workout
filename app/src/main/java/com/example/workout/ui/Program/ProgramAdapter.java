@@ -18,8 +18,8 @@ import com.example.workout.R;
 import java.util.ArrayList;
 
 
-public class ProgramAdapter extends ArrayAdapter<ProgramData> {
-    private ArrayList<ProgramData> dataSet;
+public class ProgramAdapter extends ArrayAdapter<WeekData> {
+    private ArrayList<WeekData> dataSet;
     Context myContext;
 
     public static class MyViewHolder {
@@ -32,7 +32,7 @@ public class ProgramAdapter extends ArrayAdapter<ProgramData> {
 
     }
 
-    public ProgramAdapter(ArrayList<ProgramData> data, Context context) {
+    public ProgramAdapter(ArrayList<WeekData> data, Context context) {
         super(context, R.layout.row_workout_item, data);
         this.dataSet = data;
         this.myContext = context;
@@ -41,7 +41,7 @@ public class ProgramAdapter extends ArrayAdapter<ProgramData> {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ProgramData data = getItem(position);
+        WeekData data = getItem(position);
         MyViewHolder viewHolder;
         float getWeight = 0;
         ArrayList<String> getMax = new ArrayList<>();

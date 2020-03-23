@@ -1,5 +1,6 @@
 package com.example.workout;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +27,7 @@ public class ChooseProgramActivity extends AppCompatActivity {
         setContentView(R.layout.program_layout);
         listView = findViewById(R.id.list1);
         programData = new ArrayList<>();
-        DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
+        final DBHandler dbHandler = new DBHandler(getApplication().getApplicationContext());
 
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.query(DBHandler.TB_PROGRAMS, null, null, null, null, null, null);
@@ -45,6 +47,22 @@ public class ChooseProgramActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
+                TextView textView = listView.getChildAt(position).findViewById(R.id.textView);
+                String val = textView.getText().toString();
+                SQLiteDatabase sqLiteDatabase = dbHandler.getWritableDatabase();
+                Cursor cursor1 = sqLiteDatabase.query(DBHandler.TB_CURR, null, null, null, null, null, null);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DBHandler.COL_CURR_PROGRAM, val);
+                contentValues.put(DBHandler.COL_CURR_DAY, 1);
+                contentValues.put(DBHandler.COL_CURR_WEEK, 1);
+                if (cursor1.isAfterLast()) {
+
+                    sqLiteDatabase.insert(DBHandler.TB_CURR, null, contentValues);
+                } else {
+                    sqLiteDatabase.update(DBHandler.TB_CURR, contentValues, null, null);
+                }
+                cursor1.close();
+                sqLiteDatabase.close();
                 Intent intent = new Intent(getApplicationContext(), NavBarActivity.class);
                 startActivity(intent);
             }
