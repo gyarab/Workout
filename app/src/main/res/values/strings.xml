@@ -14,9 +14,11 @@
 
     <string name="menu_home">Training max</string>
     <string name="end_workout">Finish workout</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_gallery">Progress</string>
     <string name="menu_slideshow">Program</string>
     <string name="max_change">Change</string>
+    <string name="fragment_workout_button">Finish</string>
+    <string name="fragment_progress_text">Change exercise</string>
 
     <string name="home_second">Home Second</string>
 </resources>
