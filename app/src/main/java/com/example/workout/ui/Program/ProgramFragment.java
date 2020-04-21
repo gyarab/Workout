@@ -36,7 +36,6 @@ public class ProgramFragment extends Fragment {
         btn = root.findViewById(R.id.programButton);
         final DBHandler dbHandler = new DBHandler(getContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
-        System.out.println("ive been called again");
         final Cursor cursor_current = db.query(DBHandler.TB_CURR, null, null, null, null, null, null);
         if (cursor_current.moveToFirst()) {
             currentData.add(new DateData(cursor_current.getString(cursor_current.getColumnIndex(DBHandler.COL_CURR_PROGRAM)), cursor_current.getInt(cursor_current.getColumnIndex(DBHandler.COL_CURR_WEEK)), cursor_current.getInt(cursor_current.getColumnIndex(DBHandler.COL_CURR_DAY))));
@@ -50,7 +49,7 @@ public class ProgramFragment extends Fragment {
                 cursor.moveToFirst();
             }
             while (!cursor.isAfterLast()) {
-                workoutData.add(new WeekData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_WEEKID)), cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_DAYID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_SETNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_REPNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_EXEC)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_MAX))));
+                workoutData.add(new WeekData(cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_WEEKID)), cursor.getInt(cursor.getColumnIndex(DBHandler.COL_WEEK_DAYID)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_SETNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_REPNUM)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_EXEC)), cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_MAX)), Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DBHandler.COL_WEEK_INCREASESET)))));
                 cursor.moveToNext();
             }
             cursor.close();

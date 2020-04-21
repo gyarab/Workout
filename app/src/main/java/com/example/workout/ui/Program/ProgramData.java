@@ -24,8 +24,7 @@ public class ProgramData {
     public String getName() {
         return name;
     }
-
-    public String getType() {
+    public String getType(){
         return type;
     }
 }

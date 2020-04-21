@@ -40,6 +40,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_WEEK_REPNUM = "Repetition_num";
     public static final String COL_WEEK_MAX = "Percentage_num";
     public static final String COL_WEEK_PRGNAME = "Week_program_name";
+    public static final String COL_WEEK_INCREASESET= "Increase_set";
 
     public static final String COL_MAXES_EXEC = "Exec_max";
     public static final String COL_MAXES_WEIGHT = "Exec_weight";
@@ -65,7 +66,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String tbl_cre = "CREATE TABLE IF NOT EXISTS ";
         String EXEC_TABLE = tbl_cre + TB_EXERCISES + "( " + COL_EXERCISES_ID + "  INTEGER PRIMARY KEY, " + COL_EXERCISES_NAME + " TEXT )";
         String PROGRAMS_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT, " + COL_PROGRAM_WEEKS + " INTEGER, " + COL_PROGRAM_DAYS + " INTEGER )";
-        String WEEKS_TABLE = tbl_cre + TB_WEEKS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_WEEK_PRGNAME + " TEXT, " + COL_WEEK_WEEKID + " INTEGER, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_PRGNAME + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
+        String WEEKS_TABLE = tbl_cre + TB_WEEKS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_WEEK_PRGNAME + " TEXT, " + COL_WEEK_WEEKID + " INTEGER, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + COL_WEEK_INCREASESET + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_PRGNAME + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         String MAXES_TABLE = tbl_cre + TB_MAXES + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_MAXES_EXEC + " TEXT, " + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         String CURRENT_PROGRAM = tbl_cre + TB_CURR + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_CURR_PROGRAM + " TEXT, " + COL_CURR_WEEK + " INTEGER, " + COL_CURR_DAY + " INTEGER, " + "FOREIGN KEY(" + COL_CURR_PROGRAM + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + "));";
         db.execSQL(EXEC_TABLE);
@@ -172,7 +173,7 @@ public class DBHandler extends SQLiteOpenHelper {
             e.printStackTrace();
             System.out.println("fail");
         }
-        for (int i = 0; i < workoutData.size() - 6; i = i + 6) {
+        for (int i = 0; i < workoutData.size() - 7; i = i + 7) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(COL_WEEK_WEEKID, Integer.parseInt(workoutData.get(i)));
             contentValues.put(COL_WEEK_DAYID, Integer.parseInt(workoutData.get(i + 1)));
@@ -180,6 +181,7 @@ public class DBHandler extends SQLiteOpenHelper {
             contentValues.put(COL_WEEK_SETNUM, Integer.parseInt(workoutData.get(i + 3)));
             contentValues.put(COL_WEEK_REPNUM, Integer.parseInt(workoutData.get(i + 4)));
             contentValues.put(COL_WEEK_MAX, Float.parseFloat(workoutData.get(i + 5)));
+            contentValues.put(COL_WEEK_INCREASESET, workoutData.get(i+6));
             contentValues.put(COL_WEEK_PRGNAME, "nSuns");
             db.insert(TB_WEEKS, null, contentValues);
         }
