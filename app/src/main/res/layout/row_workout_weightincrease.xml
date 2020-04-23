@@ -26,10 +26,18 @@
 
     <EditText
         android:id="@+id/textViewReps2"
-        android:layout_width="50dip"
+        android:layout_width="25dip"
         android:layout_height="wrap_content"
-        android:layout_weight="15"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_gravity="center"
+        android:enabled="true"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="false"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no"/>
 
     <TextView
         android:id="@+id/textViewAmount2"

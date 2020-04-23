@@ -23,6 +23,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TB_PROGRAMS = "programs";
     public static final String TB_MAXES = "maxes";
     public static final String TB_CURR = "current";
+    public static final String TB_INCREASES = "increases";
+    public static final String TB_PROGRESS = "progress";
 
     public static final String COL_EXERCISES_ID = "ExerciseID";
     public static final String COL_EXERCISES_NAME = "ExerciseName";
@@ -33,6 +35,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_PROGRAM_DAYS = "ProgramDays";
     public static final String COL_PROGRAM_WEEKS = "ProgramWeeks";
 
+    public static final String COL_PROGRESS_DATE = "ProgressDate";
+    public static final String COL_PROGRESS_NAME = "ProgressName";
+    public static final String COL_PROGRESS_AMOUNT = "ProgressAmount";
+
     public static final String COL_WEEK_WEEKID = "WeekID";
     public static final String COL_WEEK_DAYID = "DayID";
     public static final String COL_WEEK_EXEC = "Exercise";
@@ -40,7 +46,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_WEEK_REPNUM = "Repetition_num";
     public static final String COL_WEEK_MAX = "Percentage_num";
     public static final String COL_WEEK_PRGNAME = "Week_program_name";
-    public static final String COL_WEEK_INCREASESET= "Increase_set";
+    public static final String COL_WEEK_INCREASESET = "Increase_set";
 
     public static final String COL_MAXES_EXEC = "Exec_max";
     public static final String COL_MAXES_WEIGHT = "Exec_weight";
@@ -49,6 +55,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COL_CURR_DAY = "Curr_day";
     public static final String COL_CURR_PROGRAM = "Curr_program";
 
+    public static final String COL_INC_NAME = "Increase_name";
+    public static final String COL_INC_AMOUNT = "Increase_amount";
     SQLiteDatabase dB;
     AssetManager assetManager;
 
@@ -68,13 +76,30 @@ public class DBHandler extends SQLiteOpenHelper {
         String PROGRAMS_TABLE = tbl_cre + TB_PROGRAMS + "( " + COL_PROGRAM_ID + " INTEGER PRIMARY KEY, " + COL_PROGRAM_NAME + " TEXT ," + COL_PROGRAM_TYPE + " TEXT, " + COL_PROGRAM_WEEKS + " INTEGER, " + COL_PROGRAM_DAYS + " INTEGER )";
         String WEEKS_TABLE = tbl_cre + TB_WEEKS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_WEEK_PRGNAME + " TEXT, " + COL_WEEK_WEEKID + " INTEGER, " + COL_WEEK_DAYID + " INTEGER," + COL_WEEK_EXEC + " TEXT, " + COL_WEEK_SETNUM + " TEXT, " + COL_WEEK_REPNUM + " TEXT, " + COL_WEEK_MAX + " TEXT, " + COL_WEEK_INCREASESET + " TEXT, " + "FOREIGN KEY(" + COL_WEEK_PRGNAME + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + ")," + "FOREIGN KEY(" + COL_WEEK_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         String MAXES_TABLE = tbl_cre + TB_MAXES + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_MAXES_EXEC + " TEXT, " + COL_MAXES_WEIGHT + " FLOAT," + "FOREIGN KEY(" + COL_MAXES_EXEC + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
-        String CURRENT_PROGRAM = tbl_cre + TB_CURR + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_CURR_PROGRAM + " TEXT, " + COL_CURR_WEEK + " INTEGER, " + COL_CURR_DAY + " INTEGER, " + "FOREIGN KEY(" + COL_CURR_PROGRAM + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + "));";
+        String CURRENT_PROGRAM_TABLE = tbl_cre + TB_CURR + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_CURR_PROGRAM + " TEXT, " + COL_CURR_WEEK + " INTEGER, " + COL_CURR_DAY + " INTEGER, " + "FOREIGN KEY(" + COL_CURR_PROGRAM + ") REFERENCES " + TB_PROGRAMS + "(" + COL_PROGRAM_NAME + "));";
+        String PROGRAM_INCREASES_TABLE = tbl_cre + TB_INCREASES + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_INC_NAME + " TEXT, " + COL_INC_AMOUNT + " FLOAT," + "FOREIGN KEY(" + COL_INC_NAME + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
+        String PROGRESS_TABLE = tbl_cre + TB_PROGRESS + "( " + "id" + " INTEGER PRIMARY KEY, " + COL_PROGRESS_DATE + " TEXT, " + COL_PROGRESS_NAME + " TEXT, " + COL_PROGRESS_AMOUNT + " FLOAT, " + "FOREIGN KEY(" + COL_PROGRESS_NAME + ") REFERENCES " + TB_EXERCISES + "(" + COL_EXERCISES_NAME + "));";
         db.execSQL(EXEC_TABLE);
         db.execSQL(PROGRAMS_TABLE);
         db.execSQL(WEEKS_TABLE);
         db.execSQL(MAXES_TABLE);
-        db.execSQL(CURRENT_PROGRAM);
+        db.execSQL(CURRENT_PROGRAM_TABLE);
+        db.execSQL(PROGRAM_INCREASES_TABLE);
+        db.execSQL(PROGRESS_TABLE);
 
+        ArrayList<String[]> arrayList = new ArrayList<>();
+        arrayList.add(new String[]{"Bench press","0"});
+        arrayList.add(new String[]{"Overhead press","0"});
+        arrayList.add(new String[]{"Squat", "0"});
+        arrayList.add(new String[]{"Deadlift", "0"});
+        int iinc = 0;
+        while(iinc<arrayList.size()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COL_INC_NAME,arrayList.get(iinc)[0]);
+            contentValues.put(COL_INC_AMOUNT,arrayList.get(iinc)[1]);
+            db.insert(TB_INCREASES,null,contentValues);
+            iinc++;
+        }
 
         //program insert
         List<String> programs = new ArrayList<>();
@@ -181,7 +206,7 @@ public class DBHandler extends SQLiteOpenHelper {
             contentValues.put(COL_WEEK_SETNUM, Integer.parseInt(workoutData.get(i + 3)));
             contentValues.put(COL_WEEK_REPNUM, Integer.parseInt(workoutData.get(i + 4)));
             contentValues.put(COL_WEEK_MAX, Float.parseFloat(workoutData.get(i + 5)));
-            contentValues.put(COL_WEEK_INCREASESET, workoutData.get(i+6));
+            contentValues.put(COL_WEEK_INCREASESET, workoutData.get(i + 6));
             contentValues.put(COL_WEEK_PRGNAME, "nSuns");
             db.insert(TB_WEEKS, null, contentValues);
         }
@@ -235,6 +260,13 @@ public class DBHandler extends SQLiteOpenHelper {
         cv.put(COL_PROGRAM_NAME, name);
         return dB.insert(TB_PROGRAMS, null, cv);
     }
+    public long addDateOfProgress(String date, String name, float amount, SQLiteDatabase dB){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_PROGRESS_DATE,date);
+        contentValues.put(COL_PROGRESS_NAME,name);
+        contentValues.put(COL_PROGRESS_AMOUNT, amount);
+        return dB.insert(TB_PROGRESS,null,contentValues);
+    }
 
     public boolean updateMax(String exec, float newMax) {
         SQLiteDatabase db = getWritableDatabase();
@@ -245,6 +277,18 @@ public class DBHandler extends SQLiteOpenHelper {
         String[] selectionArgs = {exec};
         int i = db.update(TB_MAXES, contentValues, selection, selectionArgs);
         return i > 0;
+    }
+
+    public boolean updateAmount(String exec, float newAmount) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_INC_NAME, exec);
+        contentValues.put(COL_INC_AMOUNT, newAmount);
+        String selection = COL_INC_NAME + " LIKE ?";
+        String[] selectionArgs = {exec};
+        int i = db.update(TB_INCREASES, contentValues, selection, selectionArgs);
+        return i > 0;
+
     }
 
     public boolean updateCurr(String week, String day) {
