@@ -1,4 +1,4 @@
-package com.example.workout.ui.TrainingMax;
+package com.example.Workout.ui.TrainingMax;
 
 public class MaxesData {
     String name;

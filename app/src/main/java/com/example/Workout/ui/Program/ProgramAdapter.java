@@ -1,4 +1,4 @@
-package com.example.workout.ui.Program;
+package com.example.Workout.ui.Program;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.workout.DBHandler;
-import com.example.workout.R;
+import com.example.Workout.DBHandler;
+import com.example.Workout.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

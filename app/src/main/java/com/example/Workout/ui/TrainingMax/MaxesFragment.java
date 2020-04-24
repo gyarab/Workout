@@ -1,4 +1,4 @@
-package com.example.workout.ui.TrainingMax;
+package com.example.Workout.ui.TrainingMax;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,13 +17,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.workout.DBHandler;
-import com.example.workout.R;
+import com.example.Workout.DBHandler;
+import com.example.Workout.R;
 
 import java.util.ArrayList;
 
-import static com.example.workout.R.id.listMaxes;
-import static com.example.workout.R.id.maxesWeight;
+import static com.example.Workout.R.id.listMaxes;
+import static com.example.Workout.R.id.maxesWeight;
 
 public class MaxesFragment extends Fragment {
     private static MaxesAdapter adapter;

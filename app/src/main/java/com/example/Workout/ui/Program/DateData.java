@@ -1,4 +1,4 @@
-package com.example.workout.ui.Program;
+package com.example.Workout.ui.Program;
 
 public class DateData {
     String name;

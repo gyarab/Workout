@@ -1,4 +1,4 @@
-package com.example.workout.ui.TrainingMax;
+package com.example.Workout.ui.TrainingMax;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.workout.R;
+import com.example.Workout.R;
 
 import java.util.ArrayList;
 

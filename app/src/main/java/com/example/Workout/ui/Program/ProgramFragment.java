@@ -1,4 +1,4 @@
-package com.example.workout.ui.Program;
+package com.example.Workout.ui.Program;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,15 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.workout.DBHandler;
-import com.example.workout.R;
+import com.example.Workout.DBHandler;
+import com.example.Workout.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,11 +31,7 @@ public class ProgramFragment extends Fragment {
     ArrayList<DateData> currentData = new ArrayList<>();
     ArrayList<ProgramData> programs = new ArrayList<>();
     Button btn;
-    EditText increaseSet;
     boolean change = false;
-
-    public ProgramFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -132,7 +127,7 @@ public class ProgramFragment extends Fragment {
 
                             }
                         }
-                        dbHandler.updateCurr(String.valueOf(current_data.get(0).week),String.valueOf(current_data.get(0).day));
+                        dbHandler.updateCurr(String.valueOf(current_data.get(0).week), String.valueOf(current_data.get(0).day));
                     }
                 }
                 listView.setSelectionAfterHeaderView();

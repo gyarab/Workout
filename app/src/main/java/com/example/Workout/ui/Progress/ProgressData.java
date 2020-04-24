@@ -1,4 +1,4 @@
-package com.example.workout.ui.Progress;
+package com.example.Workout.ui.Progress;
 
 public class ProgressData {
     String day;

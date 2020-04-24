@@ -1,4 +1,4 @@
-package com.example.workout;
+package com.example.Workout;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -68,8 +69,23 @@ public class ChooseProgramActivity extends AppCompatActivity {
             }
 
         });
+        Button button = new Button(getApplicationContext());
+        button = findViewById(R.id.addProgramButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchActivity();
+            }
+        });
 
-    }
+
+        }
+
+private void launchActivity() {
+        Intent intent = new Intent(this, ChooseProgramActivity.class);
+        startActivity(intent);
+        }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

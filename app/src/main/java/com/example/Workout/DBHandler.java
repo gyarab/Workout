@@ -1,4 +1,4 @@
-package com.example.workout;
+package com.example.Workout;
 
 
 import android.content.ContentValues;
@@ -183,7 +183,7 @@ public class DBHandler extends SQLiteOpenHelper {
             db.insert(TB_EXERCISES, null, val);
         }
 
-        //workout insert
+        //Workout insert
         ArrayList<String> workoutData = new ArrayList<>();
         try {
             InputStream inputStream = assetManager.open("data");
