@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class ProgramFragment extends Fragment {
     private static ProgramAdapter adapter;
     ArrayList<WeekData> workoutData;

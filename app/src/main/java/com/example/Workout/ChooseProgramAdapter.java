@@ -1,5 +1,4 @@
 package com.example.Workout;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+
+
 
 public class ChooseProgramAdapter extends ArrayAdapter<ChooseProgramData> implements View.OnClickListener {
     private ArrayList<ChooseProgramData> dataSet;

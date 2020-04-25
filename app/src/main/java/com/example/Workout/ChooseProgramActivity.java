@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+
 public class ChooseProgramActivity extends AppCompatActivity {
 
     private static ChooseProgramAdapter adapter;
@@ -64,7 +65,7 @@ public class ChooseProgramActivity extends AppCompatActivity {
                 }
                 cursor1.close();
                 sqLiteDatabase.close();
-                Intent intent = new Intent(getApplicationContext(), NavBarActivity.class);
+                Intent intent = new Intent(getApplicationContext(), com.example.Workout.NavBarActivity.class);
                 startActivity(intent);
             }
 

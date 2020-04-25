@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 public class ProgramAdapter extends ArrayAdapter<WeekData> {
     private ArrayList<WeekData> dataSet;
     Context myContext;

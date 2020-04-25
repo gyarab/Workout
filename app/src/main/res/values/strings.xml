@@ -16,10 +16,13 @@
     <string name="end_workout">Finish workout</string>
     <string name="menu_progress">Progress</string>
     <string name="menu_program">Program</string>
+    <string name="menu_customization">Create program </string>
     <string name="max_change">Change</string>
     <string name="fragment_workout_button">Finish</string>
     <string name="fragment_progress_text">Change exercise</string>
-
+    <string name="choose_name">Choose program name</string>
+    <string name="choose_weeks">Choose amount of weeks</string>
+    <string name="choose_days">Choose amount of days</string>
     <string name="home_second">Home Second</string>
     <string name="title_activity_create_program">CreateProgramActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -27,7 +30,10 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
+    <string name="powerlifting">Powerlifting</string>
+    <string name="powerbuilding">Powerbuilding</string>
+    <string name="bodybuilding">Bodybuilding</string>
+    <string name="type_select">Select type</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

@@ -17,10 +17,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
+
 public class NavBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private StartActivity startActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

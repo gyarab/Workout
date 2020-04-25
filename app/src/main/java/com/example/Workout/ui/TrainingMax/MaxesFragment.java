@@ -22,8 +22,8 @@ import com.example.Workout.R;
 
 import java.util.ArrayList;
 
-import static com.example.Workout.R.id.listMaxes;
-import static com.example.Workout.R.id.maxesWeight;
+
+
 
 public class MaxesFragment extends Fragment {
     private static MaxesAdapter adapter;
@@ -37,7 +37,7 @@ public class MaxesFragment extends Fragment {
 
         final View root = inflater.inflate(R.layout.fragment_maxes, container, false);
 
-        listView = root.findViewById(listMaxes);
+        listView = root.findViewById(R.id.listMaxes);
         maxesData = new ArrayList<>();
         final DBHandler dbHandler = new DBHandler(getContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
@@ -49,8 +49,8 @@ public class MaxesFragment extends Fragment {
                 int itemsCount = listView.getChildCount();
                 //max_weight=root.findViewById(maxesWeight);
                 for (int i = 0; i < itemsCount; i++) {
-                    listView.getChildAt(i).findViewById(maxesWeight).setEnabled(isChecked);
-                    max_weight = listView.getChildAt(i).findViewById(maxesWeight);
+                    listView.getChildAt(i).findViewById(R.id.maxesWeight).setEnabled(isChecked);
+                    max_weight = listView.getChildAt(i).findViewById(R.id.maxesWeight);
 
                     if (isChecked) {
                         max_weight.addTextChangedListener(new TextWatcher() {
@@ -68,9 +68,9 @@ public class MaxesFragment extends Fragment {
 
                                 System.out.println(listViewpos);
                                 System.out.println("funguje + " + s);
-                                TextView a = root.findViewById(maxesWeight);
+                                TextView a = root.findViewById(R.id.maxesWeight);
                                 View w = listView.getChildAt(listViewpos);
-                                TextView newMax = w.findViewById(maxesWeight);
+                                TextView newMax = w.findViewById(R.id.maxesWeight);
                                 TextView newName = w.findViewById(R.id.maxesName);
                                 //System.out.println(b.getText().toString());
 

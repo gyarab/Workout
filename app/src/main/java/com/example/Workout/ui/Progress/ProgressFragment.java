@@ -27,6 +27,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 
+
+
 public class ProgressFragment extends Fragment {
 
     LineChart lineChart;

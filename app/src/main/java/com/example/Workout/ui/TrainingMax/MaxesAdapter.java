@@ -12,6 +12,8 @@ import com.example.Workout.R;
 
 import java.util.ArrayList;
 
+
+
 public class MaxesAdapter extends ArrayAdapter<MaxesData> {
     private ArrayList<MaxesData> dataSet;
     Context myContext;

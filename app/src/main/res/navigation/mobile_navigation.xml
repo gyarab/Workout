@@ -20,6 +20,12 @@
         android:name="com.example.Workout.ui.Progress.ProgressFragment"
         android:label="@string/menu_progress"
         tools:layout="@layout/fragment_graph" />
+    <fragment
+        android:id="@+id/nav_customization"
+        android:name="com.example.Workout.ui.Customization.CustomizationFragment"
+        android:label="@string/menu_customization"
+        tools:layout="@layout/fragment_customization"
+        />
 
 
 </navigation>
