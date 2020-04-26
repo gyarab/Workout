@@ -23,8 +23,6 @@ import com.example.Workout.R;
 import java.util.ArrayList;
 
 
-
-
 public class MaxesFragment extends Fragment {
     private static MaxesAdapter adapter;
     ArrayList<MaxesData> maxesData;
@@ -47,7 +45,6 @@ public class MaxesFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 int itemsCount = listView.getChildCount();
-                //max_weight=root.findViewById(maxesWeight);
                 for (int i = 0; i < itemsCount; i++) {
                     listView.getChildAt(i).findViewById(R.id.maxesWeight).setEnabled(isChecked);
                     max_weight = listView.getChildAt(i).findViewById(R.id.maxesWeight);
@@ -65,18 +62,11 @@ public class MaxesFragment extends Fragment {
                             @Override
                             public void afterTextChanged(Editable s) {
                                 listViewpos = listView.getPositionForView(listView.getFocusedChild());
-
                                 System.out.println(listViewpos);
                                 System.out.println("funguje + " + s);
-                                TextView a = root.findViewById(R.id.maxesWeight);
                                 View w = listView.getChildAt(listViewpos);
-                                TextView newMax = w.findViewById(R.id.maxesWeight);
                                 TextView newName = w.findViewById(R.id.maxesName);
-                                //System.out.println(b.getText().toString());
-
                                 dbHandler.updateMax(newName.getText().toString(), Float.parseFloat(s.toString()));
-
-
                             }
                         });
                     }

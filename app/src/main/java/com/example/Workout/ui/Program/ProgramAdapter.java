@@ -22,14 +22,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class ProgramAdapter extends ArrayAdapter<WeekData> {
     private ArrayList<WeekData> dataSet;
     Context myContext;
     String rep;
     boolean changed = false;
-    String repamount= "";
-    String name = "";
+
     public static class MyViewHolder {
         TextView textweek;
         TextView textday;
@@ -50,9 +48,6 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
 
     public boolean weightIncrease(String name, int amount) {
         DBHandler dbHandler = new DBHandler(getContext());
-        SQLiteDatabase db = dbHandler.getWritableDatabase();
-
-
         if (amount > 1 && amount < 4) {
             dbHandler.updateAmount(name, (float) 2.5);
         } else if (amount > 4) {
@@ -91,7 +86,6 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
         c.close();
         db.close();
         dbHandler.close();
-        // if (convertView == null) {
         viewHolder = new MyViewHolder();
         LayoutInflater inflater = LayoutInflater.from(getContext());
         getWeight = (getMax.get(b) * Float.parseFloat(data.getMax())) / 100;
@@ -106,21 +100,18 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
             viewHolder.textincweight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                   if(!hasFocus) {
-                       String getReps = viewHolder.textincweight.getText().toString();
-                       System.out.println(getReps);
-                       if(!getReps.equals("")){
-                           weightIncrease(viewHolder.textexec.getText().toString(),Integer.parseInt(getReps));
-                           viewHolder.textincweight.setText(getReps);
-                       }
-                   }else{
-                       Toast.makeText(getContext(),"NULL", Toast.LENGTH_SHORT).show();
-                   }
+                    if (!hasFocus) {
+                        String getReps = viewHolder.textincweight.getText().toString();
+                        if (!getReps.equals("")) {
+                            weightIncrease(viewHolder.textexec.getText().toString(), Integer.parseInt(getReps));
+                            viewHolder.textincweight.setText(getReps);
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "NULL", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
-
             viewHolder.textincweight.setText(rep);
-
         } else if (!data.getType()) {
             convertView = inflater.inflate(R.layout.row_workout_item, parent, false);
             viewHolder.textexec = convertView.findViewById(R.id.textViewExec);
@@ -129,16 +120,11 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
             viewHolder.textweight = convertView.findViewById(R.id.textViewAmount);
             viewHolder.textrep.setText(data.getRep());
         }
-        //
         convertView.setTag(viewHolder);
-      /*  } else {
-            viewHolder = (MyViewHolder) convertView.getTag();
-        }*/
         String a = String.valueOf(getWeight);
         viewHolder.textexec.setText(data.getExec());
         viewHolder.textset.setText(data.getSet());
         viewHolder.textweight.setText(a);
-        //updating weight increase based on amount of reps accomplished
         return convertView;
     }
 }

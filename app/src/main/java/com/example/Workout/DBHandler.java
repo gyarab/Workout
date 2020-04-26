@@ -245,6 +245,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public long addWeek(int weekID, int dayID, String exercise, String sets, String reps, String max) {
+       SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL_WEEK_WEEKID, weekID);
         cv.put(COL_WEEK_DAYID, dayID);
@@ -252,13 +253,17 @@ public class DBHandler extends SQLiteOpenHelper {
         cv.put(COL_WEEK_SETNUM, sets);
         cv.put(COL_WEEK_REPNUM, reps);
         cv.put(COL_WEEK_MAX, max);
-        return dB.insert(TB_WEEKS, null, cv);
+        return db.insert(TB_WEEKS, null, cv);
     }
 
-    public long addProgram(String name) {
+    public long addProgram(String name, String type, int weeks, int days) {
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL_PROGRAM_NAME, name);
-        return dB.insert(TB_PROGRAMS, null, cv);
+        cv.put(COL_PROGRAM_TYPE,type);
+        cv.put(COL_PROGRAM_WEEKS,weeks);
+        cv.put(COL_PROGRAM_DAYS,days);
+        return db.insert(TB_PROGRAMS, null, cv);
     }
     public long addDateOfProgress(String date, String name, float amount, SQLiteDatabase dB){
         ContentValues contentValues = new ContentValues();
