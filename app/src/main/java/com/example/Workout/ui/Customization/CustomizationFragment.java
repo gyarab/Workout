@@ -12,11 +12,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.Workout.DBHandler;
 import com.example.Workout.R;
-import com.example.Workout.ui.Program.ProgramFragment;
 
 
 public class CustomizationFragment extends Fragment {
@@ -50,6 +50,13 @@ public class CustomizationFragment extends Fragment {
                     dbHandler.addProgram(name, type, Integer.parseInt(weeks), Integer.parseInt(days));
                     Toast.makeText(getContext(), "SUCCESSFULLY ADDED", Toast.LENGTH_SHORT).show();
                 }
+                CustomizationFragment_2 nextFragment = new CustomizationFragment_2();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_frame_layout,nextFragment, "tag");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
 
             }
         });
@@ -57,8 +64,7 @@ public class CustomizationFragment extends Fragment {
         x_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(CustomizationFragment.this).attach(new ProgramFragment()).commit();
+
             }
         });
         return root;

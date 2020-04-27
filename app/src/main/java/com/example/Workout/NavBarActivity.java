@@ -1,11 +1,13 @@
 package com.example.Workout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +21,7 @@ import com.google.android.material.navigation.NavigationView;
 
 
 public class NavBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private Context context;
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -28,7 +30,7 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
         DBHandler dbHandler = new DBHandler(this);
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.query(DBHandler.TB_CURR, null, null, null, null, null, null);
-
+        context = getApplicationContext();
         if (cursor.isAfterLast()) {
             Intent intent = new Intent(this, StartActivity.class);
             this.startActivity(intent);
@@ -50,6 +52,7 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
             NavController navController = androidx.navigation.Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
+
         }
         cursor.close();
     }
@@ -58,6 +61,17 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav, menu);
+        MenuItem down = menu.findItem(R.id.action_settings);
+        down.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(context, ChooseProgramActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                return true;
+            }
+        });
+
         return true;
     }
 
@@ -70,6 +84,18 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Toast.makeText(getApplicationContext(),"YOUCLICKED TI", Toast.LENGTH_LONG);
+        MenuItem item2 = item;
+        String a = item2.toString();
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        // item.getTitle().toString();
+        Toast.makeText(getApplicationContext(),"YOU CLIKCED SETTINGS", Toast.LENGTH_LONG);
+        String a = item.getTitle().toString();
+        return true;
     }
 }
