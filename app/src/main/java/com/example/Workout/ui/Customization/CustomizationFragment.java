@@ -12,14 +12,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.Workout.DBHandler;
 import com.example.Workout.R;
 
 
 public class CustomizationFragment extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class CustomizationFragment extends Fragment {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Check button clicked",Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Check button clicked", Toast.LENGTH_LONG);
                 EditText program_name = root.findViewById(R.id.customization_name);
                 EditText program_weeks = root.findViewById(R.id.customization_weeks);
                 EditText program_days = root.findViewById(R.id.customization_days);
@@ -43,21 +42,23 @@ public class CustomizationFragment extends Fragment {
                 String days = program_days.getText().toString();
 
                 DBHandler dbHandler = new DBHandler(getContext());
-                if(radioGroup.getCheckedRadioButtonId()==-1 | name.equals("") | days.equals("") | weeks.equals("")) {
-                    Toast.makeText(getContext(),"Please fill parameters correctly",Toast.LENGTH_LONG);
-                }else{
+                if (radioGroup.getCheckedRadioButtonId() == -1 | name.equals("") | days.equals("") | weeks.equals("")) {
+                    Toast.makeText(getContext(), "Please fill parameters correctly", Toast.LENGTH_LONG);
+                } else {
                     String type = radioButton.getText().toString();
-                    dbHandler.addProgram(name, type, Integer.parseInt(weeks), Integer.parseInt(days));
-                    Toast.makeText(getContext(), "SUCCESSFULLY ADDED", Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name); // Put anything what you want
+                    bundle.putString("weeks", weeks);
+                    bundle.putString("days",days);
+                    bundle.putString("type",type);
+                    dbHandler.updateDate(1,1);
+                    CustomizationFragment_2 fragment2 = new CustomizationFragment_2();
+                    fragment2.setArguments(bundle);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_host_fragment, fragment2, "tag").addToBackStack(null)
+                            .commit();
                 }
-                CustomizationFragment_2 nextFragment = new CustomizationFragment_2();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_frame_layout,nextFragment, "tag");
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-
             }
         });
         Button x_button = root.findViewById(R.id.x_button);

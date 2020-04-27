@@ -49,26 +49,29 @@ public class ChooseProgramActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 TextView textView = listView.getChildAt(position).findViewById(R.id.textView);
-                String val = textView.getText().toString();
-                SQLiteDatabase sqLiteDatabase = dbHandler.getWritableDatabase();
-                Cursor cursor1 = sqLiteDatabase.query(DBHandler.TB_CURR, null, null, null, null, null, null);
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(DBHandler.COL_CURR_PROGRAM, val);
-                contentValues.put(DBHandler.COL_CURR_DAY, 1);
-                contentValues.put(DBHandler.COL_CURR_WEEK, 1);
-                if (cursor1.isAfterLast()) {
+                    String val = textView.getText().toString();
+                    SQLiteDatabase sqLiteDatabase = dbHandler.getWritableDatabase();
+                    Cursor cursor1 = sqLiteDatabase.query(DBHandler.TB_CURR, null, null, null, null, null, null);
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DBHandler.COL_CURR_PROGRAM, val);
+                    contentValues.put(DBHandler.COL_CURR_DAY, 1);
+                    contentValues.put(DBHandler.COL_CURR_WEEK, 1);
+                    if (cursor1.isAfterLast()) {
 
-                    sqLiteDatabase.insert(DBHandler.TB_CURR, null, contentValues);
-                } else {
-                    sqLiteDatabase.update(DBHandler.TB_CURR, contentValues, null, null);
+                        sqLiteDatabase.insert(DBHandler.TB_CURR, null, contentValues);
+                    } else {
+                        sqLiteDatabase.update(DBHandler.TB_CURR, contentValues, null, null);
+                    }
+                    cursor1.close();
+                    sqLiteDatabase.close();
+                    Intent intent = new Intent(getApplicationContext(), com.example.Workout.NavBarActivity.class);
+                    intent.putExtra("ahoj",2);
+                    startActivity(intent);
                 }
-                cursor1.close();
-                sqLiteDatabase.close();
-                Intent intent = new Intent(getApplicationContext(), com.example.Workout.NavBarActivity.class);
-                startActivity(intent);
-            }
+
 
         });
+
     }
 
 

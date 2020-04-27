@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -33,7 +34,7 @@ public class ProgramFragment extends Fragment {
     ArrayList<ProgramData> programs = new ArrayList<>();
     Button btn;
     boolean change = false;
-
+    static String text;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,55 +87,65 @@ public class ProgramFragment extends Fragment {
                     }
                     cursor_programs.close();
                 }
-                for (int i = 0; i < programs.size(); i++) {
-                    if (programs.get(i).getName().equals(currentData.get(0).getName())) {
-                        if (currentData.get(0).getDay() < programs.get(i).getDay()) {
-                            currentData.get(0).day += 1;
 
-                        } else {
-                            currentData.get(0).day = 1;
-                            if (currentData.get(0).getWeek() < programs.get(i).getWeek()) {
-                                currentData.get(0).week += 1;
+                if(adapter.isButtonEnabled()) {
+                    for (int i = 0; i < programs.size(); i++) {
+                        if (programs.get(i).getName().equals(currentData.get(0).getName())) {
+                            if (currentData.get(0).getDay() < programs.get(i).getDay()) {
+                                currentData.get(0).day += 1;
 
                             } else {
-                                change = true;
-                                new Thread() {
-                                    @Override
-                                    public void run() {
-                                        Cursor c = sqLiteDatabase.query(DBHandler.TB_INCREASES, null, null, null, null, null, null);
-                                        Cursor c2 = sqLiteDatabase.query(DBHandler.TB_MAXES, null, null, null, null, null, null);
-                                        Map<String, Float> map = new HashMap<>();
-                                        c2.moveToFirst();
-                                        while (!c2.isAfterLast()) {
-                                            map.put(c2.getString(c2.getColumnIndex(DBHandler.COL_MAXES_EXEC)), c2.getFloat(c2.getColumnIndex(DBHandler.COL_MAXES_WEIGHT)));
-                                            c2.moveToNext();
-                                        }
-                                        c.moveToFirst();
-                                        while (!c.isAfterLast()) {
-                                            String name = c.getString(c.getColumnIndex(dbHandler.COL_INC_NAME));
-                                            float newMax = map.get(name) + c.getFloat(c.getColumnIndex(dbHandler.COL_INC_AMOUNT));
-                                            dbHandler.updateMax(name, newMax);
-                                            Date date = Calendar.getInstance().getTime();
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-                                            String formattedDate = simpleDateFormat.format(date);
-                                            dbHandler.addDateOfProgress(formattedDate, name, newMax, sqLiteDatabase);
-                                            c.moveToNext();
-                                        }
-                                        c.close();
-                                        c2.close();
-                                    }
-                                }.start();
-                                currentData.get(0).week = 1;
+                                currentData.get(0).day = 1;
+                                if (currentData.get(0).getWeek() < programs.get(i).getWeek()) {
+                                    currentData.get(0).week += 1;
 
+                                } else {
+                                    change = true;
+                                    new Thread() {
+                                        @Override
+                                        public void run() {
+                                            Cursor c = sqLiteDatabase.query(DBHandler.TB_INCREASES, null, null, null, null, null, null);
+                                            Cursor c2 = sqLiteDatabase.query(DBHandler.TB_MAXES, null, null, null, null, null, null);
+                                            Map<String, Float> map = new HashMap<>();
+                                            c2.moveToFirst();
+                                            while (!c2.isAfterLast()) {
+                                                map.put(c2.getString(c2.getColumnIndex(DBHandler.COL_MAXES_EXEC)), c2.getFloat(c2.getColumnIndex(DBHandler.COL_MAXES_WEIGHT)));
+                                                c2.moveToNext();
+                                            }
+                                            c.moveToFirst();
+                                            while (!c.isAfterLast()) {
+                                                String name = c.getString(c.getColumnIndex(dbHandler.COL_INC_NAME));
+                                                float newMax = map.get(name) + c.getFloat(c.getColumnIndex(dbHandler.COL_INC_AMOUNT));
+                                                dbHandler.updateMax(name, newMax);
+                                                Date date = Calendar.getInstance().getTime();
+                                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+                                                String formattedDate = simpleDateFormat.format(date);
+                                                dbHandler.addDateOfProgress(formattedDate, name, newMax, sqLiteDatabase);
+                                                c.moveToNext();
+                                            }
+                                            c.close();
+                                            c2.close();
+                                        }
+                                    }.start();
+                                    currentData.get(0).week = 1;
+
+                                }
                             }
-                        }
-                        dbHandler.updateCurr(String.valueOf(current_data.get(0).week), String.valueOf(current_data.get(0).day));
-                    }
-                }
-                listView.setSelectionAfterHeaderView();
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(ProgramFragment.this).attach(ProgramFragment.this).commit();
+                        }
+                    }
+                    dbHandler.updateCurr(String.valueOf(current_data.get(0).week), String.valueOf(current_data.get(0).day));
+                    listView.setSelectionAfterHeaderView();
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(ProgramFragment.this).attach(ProgramFragment.this).commit();
+                    text="";
+                }else{
+                    Toast.makeText(getContext(),"Please fill max set", Toast.LENGTH_LONG);
+
+                }
+
+
             }
         });
         db.close();

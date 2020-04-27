@@ -38,4 +38,7 @@
     <string name="type_select">Select type</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="exec_search">Search exercise</string>
+    <string name="add_day">Day finished</string>
+    <string name="customization_weight">Weight</string>
 </resources>

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +22,6 @@ import com.google.android.material.navigation.NavigationView;
 public class NavBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Context context;
     private AppBarConfiguration mAppBarConfiguration;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,18 +82,11 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(getApplicationContext(),"YOUCLICKED TI", Toast.LENGTH_LONG);
-        MenuItem item2 = item;
-        String a = item2.toString();
         return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        // item.getTitle().toString();
-        Toast.makeText(getApplicationContext(),"YOU CLIKCED SETTINGS", Toast.LENGTH_LONG);
-        String a = item.getTitle().toString();
         return true;
     }
 }

@@ -31,6 +31,7 @@ public class Phase2Adapter extends ArrayAdapter<Phase2Data> {
         convertView = inflater.inflate(R.layout.phase2_layout, parent, false);
         MyViewHolder viewHolder=  new MyViewHolder();
         viewHolder.name = convertView.findViewById(R.id.phase2row);
+        viewHolder.name.setText(dataSet.get(position).getName());
         convertView.setTag(viewHolder);
 
         return convertView;
