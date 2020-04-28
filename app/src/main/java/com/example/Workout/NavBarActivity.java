@@ -26,6 +26,7 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DBHandler dbHandler = new DBHandler(this);
+
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.query(DBHandler.TB_CURR, null, null, null, null, null, null);
         context = getApplicationContext();
@@ -89,4 +90,5 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
     public boolean onOptionsItemSelected(MenuItem item) {
         return true;
     }
+
 }

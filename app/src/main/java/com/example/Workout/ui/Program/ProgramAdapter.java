@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -26,8 +25,10 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
     private ArrayList<WeekData> dataSet;
     Context myContext;
     String rep;
-    boolean changed = false;
+    private int position;
     private boolean buttonenabled;
+    private boolean containsMaxSet=false;
+
     public static class MyViewHolder {
         TextView textweek;
         TextView textday;
@@ -57,8 +58,12 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
         }
         return true;
     }
-    public boolean isButtonEnabled(){
+
+    public boolean isButtonEnabled() {
         return buttonenabled;
+    }
+    public boolean containsMaxSet(){
+        return containsMaxSet;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -67,7 +72,7 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
         final WeekData data = getItem(position);
         final MyViewHolder viewHolder;
         float getWeight = 0;
-        boolean isNotSuper=false;
+        boolean isNotSuper = false;
         Map<String, Float> getMax = new HashMap<>();
         final DBHandler dbHandler = new DBHandler(getContext());
         SQLiteDatabase db = dbHandler.getReadableDatabase();
@@ -77,12 +82,12 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
             b = "Squat";
         } else if (b.toLowerCase().contains("deadlift")) {
             b = "Deadlift";
-        } else if(b.toLowerCase().contains("bench press")){
+        } else if (b.toLowerCase().contains("bench press")) {
             b = "Bench press";
-        }else{
-            isNotSuper=true;
+        } else {
+            isNotSuper = true;
         }
-        if(!isNotSuper) {
+        if (!isNotSuper) {
             String selectquery = "SELECT " + dbHandler.COL_MAXES_WEIGHT + " FROM " + dbHandler.TB_MAXES + " WHERE " + String.join(" ", dbHandler.COL_MAXES_EXEC) + "=" + "'" + b + "'";
             Cursor c = db.rawQuery(selectquery, null);
             if (c.moveToFirst()) {
@@ -90,13 +95,13 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
 
             }
             c.close();
-            if(!getMax.get(b).equals(0)) {
+            if (!getMax.get(b).equals(0)) {
                 getWeight = (getMax.get(b) * Float.parseFloat(data.getMax())) / 100;
-            }else{
-                getWeight=0;
+            } else {
+                getWeight = 0;
             }
-        }else{
-            getWeight= Float.parseFloat(data.getMax());
+        } else {
+            getWeight = Float.parseFloat(data.getMax());
         }
 
 
@@ -105,14 +110,16 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
         viewHolder = new MyViewHolder();
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        changed = false;
         if (data.getType()) {
+            containsMaxSet=true;
+            this.position = position;
             convertView = inflater.inflate(R.layout.row_workout_weightincrease, parent, false);
             viewHolder.textexec = convertView.findViewById(R.id.textViewExec2);
             viewHolder.textset = convertView.findViewById(R.id.textViewSets2);
             viewHolder.textincweight = convertView.findViewById(R.id.textViewReps2);
             viewHolder.textweight = convertView.findViewById(R.id.textViewAmount2);
             viewHolder.textincweight.setHint(data.getRep() + "+");
+
             viewHolder.textincweight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -123,17 +130,16 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
                         if (!getReps.equals("")) {
                             weightIncrease(viewHolder.textexec.getText().toString(), Integer.parseInt(getReps));
                             viewHolder.textincweight.setText(getReps);
-                            buttonenabled=true;
-                        }else{
-                            buttonenabled=false;
+                            buttonenabled = true;
+
+                        } else {
+                            buttonenabled = false;
                         }
-                    } else {
-                        Toast.makeText(getContext(), "NULL", Toast.LENGTH_SHORT).show();
                     }
 
                 }
             });
-            viewHolder.textincweight.setText(rep);
+           // viewHolder.textincweight.setText(rep);
         } else if (!data.getType()) {
             convertView = inflater.inflate(R.layout.row_workout_item, parent, false);
             viewHolder.textexec = convertView.findViewById(R.id.textViewExec);
@@ -149,5 +155,13 @@ public class ProgramAdapter extends ArrayAdapter<WeekData> {
         viewHolder.textweight.setText(a);
 
         return convertView;
+    }
+
+    public void setContainsMaxSet(boolean containsMaxSet) {
+        this.containsMaxSet = containsMaxSet;
+    }
+
+    public void setButtonenabled(boolean buttonenabled) {
+        this.buttonenabled = buttonenabled;
     }
 }

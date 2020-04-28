@@ -318,11 +318,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
     public boolean deleteProgram(String name){
-        String selection = COL_PROGRAM_NAME + "=";
-        String[] selectionArgs = {name};
-        String selecton2 = COL_WEEK_PRGNAME + "=";
-        dB.delete(TB_PROGRAMS,selection,selectionArgs);
-        dB.delete(TB_WEEKS,selecton2,selectionArgs);
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TB_PROGRAMS,COL_PROGRAM_NAME + "='" + name + "'",null);
+        db.delete(TB_WEEKS,COL_WEEK_PRGNAME + "='" + name + "'",null);
         return true;
     }
 

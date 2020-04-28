@@ -4,11 +4,14 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,14 +46,16 @@ public class ChooseProgramActivity extends AppCompatActivity {
         db.close();
         dbHandler.close();
         cursor.close();
+        final Switch delete_switch = findViewById(R.id.delete_switch);
         adapter = new ChooseProgramAdapter(programData, getApplicationContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 TextView textView = listView.getChildAt(position).findViewById(R.id.textView);
-                    String val = textView.getText().toString();
-                    SQLiteDatabase sqLiteDatabase = dbHandler.getWritableDatabase();
+                String val = textView.getText().toString();
+                SQLiteDatabase sqLiteDatabase = dbHandler.getWritableDatabase();
+                if (!delete_switch.isChecked()) {
                     Cursor cursor1 = sqLiteDatabase.query(DBHandler.TB_CURR, null, null, null, null, null, null);
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(DBHandler.COL_CURR_PROGRAM, val);
@@ -65,13 +70,39 @@ public class ChooseProgramActivity extends AppCompatActivity {
                     cursor1.close();
                     sqLiteDatabase.close();
                     Intent intent = new Intent(getApplicationContext(), com.example.Workout.NavBarActivity.class);
-                    intent.putExtra("ahoj",2);
-                    startActivity(intent);
-                }
 
+
+                    startActivity(intent);
+                } else {
+                    dbHandler.deleteProgram(textView.getText().toString());
+                    for(int i=0;i<programData.size();i++){
+                        if(programData.get(i).getName().equals(textView.getText().toString())){
+                            programData.remove(i);
+                            ((ChooseProgramAdapter) listView.getAdapter()).notifyDataSetChanged();
+                            break;
+                        }
+
+                    }
+
+                }
+            }
 
         });
+    delete_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked){
+                for(int i =0;i<listView.getChildCount();i++){
+                    listView.getChildAt(i).setBackgroundColor(Color.rgb(247,114,114));
+                }
 
+            }else{
+                for(int i =0;i<listView.getChildCount();i++) {
+                    listView.getChildAt(i).setBackgroundColor(Color.WHITE);
+                }
+            }
+        }
+    });
     }
 
 
