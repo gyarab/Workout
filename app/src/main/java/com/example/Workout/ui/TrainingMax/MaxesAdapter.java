@@ -30,8 +30,6 @@ public class MaxesAdapter extends ArrayAdapter<MaxesData> {
         this.myContext = context;
     }
 
-    private int lastposition = -1;
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         MaxesData data = getItem(position);
@@ -47,9 +45,7 @@ public class MaxesAdapter extends ArrayAdapter<MaxesData> {
         } else {
             viewHolder = (MyViewHolder) convertView.getTag();
         }
-        lastposition = position;
         viewHolder.txtname.setText(data.getName());
-        // viewHolder.txtweight.setText(String.valueOf(data.getWeight()));
         viewHolder.txtweight.setHint(String.valueOf(data.getWeight()));
         convertView.setOnClickListener(new View.OnClickListener() {
 

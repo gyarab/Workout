@@ -2,13 +2,11 @@
     <string name="app_name">Workout</string>
 
     <string name="title_activity_choose_program">chooseProgram</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_nav">Nav</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_subtitle">Workout</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Switch program</string>
     <string name="customization_reps">Reps</string>
@@ -27,7 +25,6 @@
     <string name="choose_days">Choose amount of days</string>
     <string name="home_second">Home Second</string>
     <string name="title_activity_create_program">CreateProgramActivity</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>

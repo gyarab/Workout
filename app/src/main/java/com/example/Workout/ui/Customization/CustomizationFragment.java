@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.Workout.DBHandler;
 import com.example.Workout.R;
+import com.example.Workout.ui.Program.ProgramFragment;
 
 
 public class CustomizationFragment extends Fragment {
@@ -30,7 +31,7 @@ public class CustomizationFragment extends Fragment {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Check button clicked", Toast.LENGTH_LONG);
+
                 EditText program_name = root.findViewById(R.id.customization_name);
                 EditText program_weeks = root.findViewById(R.id.customization_weeks);
                 EditText program_days = root.findViewById(R.id.customization_days);
@@ -43,7 +44,7 @@ public class CustomizationFragment extends Fragment {
 
                 DBHandler dbHandler = new DBHandler(getContext());
                 if (radioGroup.getCheckedRadioButtonId() == -1 | name.equals("") | days.equals("") | weeks.equals("")) {
-                    Toast.makeText(getContext(), "Please fill parameters correctly", Toast.LENGTH_LONG);
+                    Toast.makeText(getContext(), "Please fill all parameters", Toast.LENGTH_LONG).show();
                 } else {
                     String type = radioButton.getText().toString();
                     Bundle bundle = new Bundle();
@@ -65,9 +66,13 @@ public class CustomizationFragment extends Fragment {
         x_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ProgramFragment fragment2 = new ProgramFragment();
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment, fragment2, null).addToBackStack(null)
+                        .commit();
             }
-        });
+            });
         return root;
     }
 }

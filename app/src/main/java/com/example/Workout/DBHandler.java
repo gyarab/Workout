@@ -334,6 +334,11 @@ public class DBHandler extends SQLiteOpenHelper {
         int i = db.update(TB_CURR, contentValues, selection, selectionArgs);
         return i > 0;
     }
+    public boolean deleteIncreases(){
+        SQLiteDatabase db = getWritableDatabase();
+       db.delete(TB_INCREASES,null,null);
+       return true;
+    }
 }
 
 

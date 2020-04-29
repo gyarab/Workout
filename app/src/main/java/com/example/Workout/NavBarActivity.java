@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 public class NavBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Context context;
     private AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +37,10 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
 
         } else {
             setContentView(R.layout.activity_nav);
-
-
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
-            // Passing each menu ID as a set of Ids because each
-            // menu should be considered as top level destinations.
             mAppBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.nav_maxes, R.id.nav_progress, R.id.nav_program)
                     .setDrawerLayout(drawer)
@@ -51,14 +48,12 @@ public class NavBarActivity extends AppCompatActivity implements NavigationView.
             NavController navController = androidx.navigation.Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
-
         }
         cursor.close();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav, menu);
         MenuItem down = menu.findItem(R.id.action_settings);
         down.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

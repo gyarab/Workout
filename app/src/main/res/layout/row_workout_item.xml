@@ -12,16 +12,16 @@
 
     <TextView
         android:id="@+id/textViewExec"
-        android:layout_width="100dip"
+        android:layout_width="150dip"
         android:layout_height="wrap_content"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textViewSets"
-        android:layout_width="50dip"
+        android:layout_width="25dip"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginLeft="10dip"
+        android:layout_weight="1"
         android:textSize="14sp" />
 
     <TextView
@@ -33,9 +33,9 @@
 
     <TextView
         android:id="@+id/textViewAmount"
-        android:layout_width="100dip"
-        android:layout_weight="1"
+        android:layout_width="80dip"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:textSize="14sp" />
 
     <CheckBox
