@@ -68,7 +68,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
         assetManager = context.getAssets();
-        //dB = getWritableDatabase();
         myContext = context;
 
     }
@@ -118,18 +117,6 @@ public class DBHandler extends SQLiteOpenHelper {
         programs.add("Powerbuilding");
         programs.add("1");
         programs.add("5");
-        programs.add("1");
-        programs.add("5/3/1 BBB");
-        programs.add("Powerlifting");
-        programs.add("4");
-        programs.add("5");
-        programs.add("2");
-        programs.add("Jacked & Tan");
-        programs.add("Powerbuilding");
-        programs.add("6");
-        programs.add("6");
-
-
         for (int i = 0; i < programs.size() - 4; i = i + 5) {
             ContentValues val = new ContentValues();
             val.put(COL_PROGRAM_ID, programs.get(i));
